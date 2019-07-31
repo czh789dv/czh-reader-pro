@@ -16,6 +16,7 @@ export default {
     hideTitleAndMenu() {
       // this.$store.dispatch('setmenuVisible', false)
       this.setmenuVisible(false)
+      this.setSettingVisible(-1)
     },
     prevPage() {
       if (this.rendition) {
@@ -30,6 +31,9 @@ export default {
       }
     },
     toggleTitleAndMenu() {
+      if (this.menuVisible) {
+        this.setSettingVisible(-1)
+      }
       // this.$store.dispatch('setmenuVisible', !this.menuVisible)
       this.setmenuVisible(!this.menuVisible)
     },
