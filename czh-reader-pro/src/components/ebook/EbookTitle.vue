@@ -1,7 +1,7 @@
 <template>
 
   <transition name="slide-down">
-    <div class="title-wrapper">
+    <div class="title-wrapper" v-show="menuVisible">
       <div class="left">
         <span class="icon-back iconfont" @click="back"></span>
       </div>
@@ -22,7 +22,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    ...mapGetters(['menuVisible'])
+  },
   components: {},
   data() {
     return {

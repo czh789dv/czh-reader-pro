@@ -12,20 +12,27 @@ import Epub from 'epubjs'
 global.ePub = Epub
 export default {
   computed: {
-    ...mapGetters(['fileName'])
+    ...mapGetters(['fileName', 'menuVisible'])
   },
   methods: {
+    hideTitleAndMenu() {
+      this.$store.dispatch('setmenuVisible', false)
+    },
     prevPage() {
       if (this.rendition) {
         this.rendition.prev()
+        this.hideTitleAndMenu()
       }
     },
     nextPage() {
       if (this.rendition) {
         this.rendition.next()
+        this.hideTitleAndMenu()
       }
     },
-    toggleTitleAndMenu() {},
+    toggleTitleAndMenu() {
+      this.$store.dispatch('setmenuVisible', !this.menuVisible)
+    },
     initEpub() {
       //拼接URL
       const url = 'http://192.168.123.169:9000/project/epub/' + this.fileName + '.epub'
