@@ -6,14 +6,12 @@
 
 <script>
 import {
-  mapGetters
-} from 'vuex'
+  ebookMixin
+} from '../../utils/mixin'
 import Epub from 'epubjs'
 global.ePub = Epub
 export default {
-  computed: {
-    ...mapGetters(['fileName', 'menuVisible'])
-  },
+  mixins: [ebookMixin],
   methods: {
     hideTitleAndMenu() {
       this.$store.dispatch('setmenuVisible', false)
