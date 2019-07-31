@@ -1,6 +1,6 @@
 <template>
   <div class="ebook-reader">
-    <div class="read"></div>
+    <div id="read"></div>
   </div>
 </template>
 
@@ -15,22 +15,52 @@ export default {
     ...mapGetters(['fileName'])
   },
   methods: {
+    prevPage() {
+      if (this.rendition) {
+        this.rendition.prev()
+      }
+    },
+    nextPage() {
+      if (this.rendition) {
+        this.rendition.next()
+      }
+    },
+    toggleTitleAndMenu() {},
     initEpub() {
       //拼接URL
       const url = 'http://192.168.123.169:9000/project/epub/' + this.fileName + '.epub'
       console.log(url)
       //创建电子书实例
-      this.book =new Epub(url)
+      this.book = new Epub(url)
+      console.log(this.book)
       //绑定DOM对象 渲染电子书
-      this.rendition =this.book.renderTo('read', {
+      this.rendition = this.book.renderTo('read', {
         //设置渲染为屏幕的宽高
-        width:innerWidth,
-        height:innerHeight,
+        width: innerWidth,
+        height: innerHeight,
         //微信设置
-        method:'default'
+        method: 'default'
       })
       //显示电子书
       this.rendition.display()
+      console.log(111)
+      this.rendition.on('touchstart', event => {
+        this.touchStartX = event.changedTouches[0].clientX
+        this.touchStartTime = event.timeStamp
+      })
+      this.rendition.on('touchend', event => {
+        const offsetX = event.changedTouches[0].clientX - this.touchStartX
+        const time = event.timeStamp - this.touchStartTime
+        if (time < 500 && offsetX > 40) {
+          this.prevPage()
+        } else if (time < 500 && offsetX < -40) {
+          this.nextPage()
+        } else {
+          this.toggleTitleAndMenu()
+        }
+        event.preventDefault()
+        event.stopPropagation()
+      })
     }
   },
   mounted() {
