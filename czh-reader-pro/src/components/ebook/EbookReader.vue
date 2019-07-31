@@ -14,7 +14,8 @@ export default {
   mixins: [ebookMixin],
   methods: {
     hideTitleAndMenu() {
-      this.$store.dispatch('setmenuVisible', false)
+      // this.$store.dispatch('setmenuVisible', false)
+      this.setmenuVisible(false)
     },
     prevPage() {
       if (this.rendition) {
@@ -29,7 +30,8 @@ export default {
       }
     },
     toggleTitleAndMenu() {
-      this.$store.dispatch('setmenuVisible', !this.menuVisible)
+      // this.$store.dispatch('setmenuVisible', !this.menuVisible)
+      this.setmenuVisible(!this.menuVisible)
     },
     initEpub() {
       //拼接URL
@@ -71,7 +73,11 @@ export default {
   mounted() {
     // const baseUrl = 'http://192.168.123.169:9000/project/epub/'
     // const fileName = this.$route.params.fileName.split('|').join('/')
-    this.$store.dispatch('setFileName', this.$route.params.fileName.split('|').join('/')).then(() => {
+
+    // this.$store.dispatch('setFileName', this.$route.params.fileName.split('|').join('/')).then(() => {
+    //   this.initEpub()
+    // })
+    this.setFileName(this.$route.params.fileName.split('|').join('/')).then(() => {
       this.initEpub()
     })
     // console.log(`${baseUrl}${fileName}.epub`)

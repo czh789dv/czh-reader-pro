@@ -11,18 +11,7 @@ const book = {
       state.menuVisible = menuVisible
     }
   },
-  actions: {
-    setFileName: ({
-      commit
-    }, fileName) => {
-      return commit('SET_FILENAME', fileName)
-    },
-    setmenuVisible: ({
-      commit
-    }, menuVisible) => {
-      return commit('SET_MENUVISIBLE', menuVisible)
-    }
-  }
+  actions: {}
 }
 
 export default book
