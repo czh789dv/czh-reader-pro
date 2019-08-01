@@ -15,7 +15,7 @@ export default {
   methods: {
     hideTitleAndMenu() {
       // this.$store.dispatch('setmenuVisible', false)
-      this.setmenuVisible(false)
+      this.setMenuVisible(false)
       this.setSettingVisible(-1)
     },
     prevPage() {
@@ -35,7 +35,7 @@ export default {
         this.setSettingVisible(-1)
       }
       // this.$store.dispatch('setmenuVisible', !this.menuVisible)
-      this.setmenuVisible(!this.menuVisible)
+      this.setMenuVisible(!this.menuVisible)
     },
     initEpub() {
       //拼接URL
@@ -43,6 +43,7 @@ export default {
       console.log(url)
       //创建电子书实例
       this.book = new Epub(url)
+      this.setCurrentBook(this.book)
       console.log(this.book)
       //绑定DOM对象 渲染电子书
       this.rendition = this.book.renderTo('read', {
