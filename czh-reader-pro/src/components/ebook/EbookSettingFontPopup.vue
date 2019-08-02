@@ -7,18 +7,31 @@
         </div>
         <div class="ebook-popup-title-text">选择字体</div>
       </div>
-      <div class="ebook-popup-list-wrapper"></div>
+      <div class="ebook-popup-list-wrapper">
+        <div class="ebook-popup-item" v-for="(item, key) in fontFamilyList" :key="key">
+          <div class="ebook-popup-item-text" :class="{'selected':isSelected(item)}">{{item.font}}</div>
+          <div class="ebook-popup-item-check">
+            <span class="icon-check iconfont" v-if="isSelected(item)"></span>
+          </div>
+        </div>
+      </div>
     </div>
   </transition>
 </template>
 
 <script>
 import {
+  FONT_FAMILY
+} from '../../utils/book'
+import {
   ebookMixin
 } from '../../utils/mixin'
 export default {
   mixins: [ebookMixin],
   methods: {
+    isSelected(item) {
+      return this.defaultFontFamily === item.font
+    },
     hide() {
       this.fontFamilyVisible(false)
     }
@@ -26,8 +39,7 @@ export default {
   components: {},
   data() {
     return {
-      fontFamilyList: []
-
+      fontFamilyList: FONT_FAMILY
     }
   }
 }
@@ -46,6 +58,7 @@ export default {
   box-shadow: 0 px2rem(-4) px2rem(6) rgba(0, 0, 0, 0.15);
 
   .ebook-popup-title {
+    position: relative;
     padding: px2rem(15);
     box-sizing: border-box;
     border-bottom: px2rem(1) soild #b8b99b;
@@ -70,6 +83,32 @@ export default {
     }
   }
 
-  .ebook-popup-list-wrapper {}
+  .ebook-popup-list-wrapper {
+    .ebook-popup-item {
+      display: flex;
+      padding: px2rem(15);
+      .ebook-popup-item-text {
+        flex: 1;
+        font-size: px2rem(14);
+        text-align: left;
+        &.selected{
+          color: #fb2263;
+          font-weight: bold;
+        }
+      }
+
+      .ebook-popup-item-check {
+        flex: 1;
+        text-align: right;
+        font-size: px2rem(14);
+        &.selected{
+          color: #fb2263;
+          font-weight: bold;
+        }
+        .icon-check {}
+      }
+    }
+
+  }
 }
 </style>
