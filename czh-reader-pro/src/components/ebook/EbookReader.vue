@@ -9,7 +9,9 @@ import {
   getFontFamily,
   saveFontFamily,
   getFontSize,
-  saveFontSize
+  saveFontSize,
+  getTheme,
+  saveTheme
 } from '../../utils/localStorage'
 import {
   ebookMixin
@@ -67,11 +69,22 @@ export default {
       }
     },
     initTheme() {
+      //获取缓存里的值
+      let defaultTheme = getTheme(this.fileName)
+      if (!defaultTheme) {
+        //如果没有则设置为 主题列表第一个
+        defaultTheme = this.themeList[0].name
+        //保存到vuex中
+        this.setDefaultTheme(defaultTheme)
+        //保存到缓存
+        saveTheme(this.fileName, defaultTheme)
+      }
+
       this.themeList.forEach(theme => {
         //遍历并注册
         this.rendition.themes.register(theme.name, theme.style)
       })
-      this.rendition.themes.select(this.defaultTheme)
+      this.rendition.themes.select(defaultTheme)
     },
     initEpub() {
       //拼接URL

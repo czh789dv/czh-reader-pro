@@ -15,6 +15,9 @@
 import {
   ebookMixin
 } from '../../utils/mixin'
+import {
+  saveTheme
+} from '../../utils/localStorage'
 export default {
   methods: {
     setTheme(index) {
@@ -22,6 +25,8 @@ export default {
       this.setDefaultTheme(theme.name).then(() => {
         this.currentBook.rendition.themes.select(this.defaultTheme)
       })
+      //保存到本地缓存
+      saveTheme(this.fileName, theme.name)
     }
   },
   mixins: [ebookMixin],
@@ -66,9 +71,11 @@ export default {
         flex: 1;
         border: px2rem(1) solid #ccc;
         box-sizing: border-box;
-        .selected{
+
+        &.selected {
           //向下4 长度6
-          box-shadow: 0 px2rem(4) px2rem(6) 0 rgba(0, 0, 0, 0.15);}
+          box-shadow: 0 px2rem(4) px2rem(6) 0 rgba(0, 0, 0, 0.15);
+        }
 
       }
 
