@@ -8,7 +8,7 @@
         <div class="ebook-popup-title-text">选择字体</div>
       </div>
       <div class="ebook-popup-list-wrapper">
-        <div class="ebook-popup-item" v-for="(item, key) in fontFamilyList" :key="key">
+        <div class="ebook-popup-item" v-for="(item, key) in fontFamilyList" :key="key" @click="setFontFamily(item.font)">
           <div class="ebook-popup-item-text" :class="{'selected':isSelected(item)}">{{item.font}}</div>
           <div class="ebook-popup-item-check">
             <span class="icon-check iconfont" v-if="isSelected(item)"></span>
@@ -29,6 +29,15 @@ import {
 export default {
   mixins: [ebookMixin],
   methods: {
+    setFontFamily(font) {
+      this.setDefaultFontFamily(font)
+      if (font === 'Default') {
+        this.currentBook.rendition.themes.font('Times New Roman')
+      } else {
+        this.currentBook.rendition.themes.font(font)
+        console.log('????' + font)
+      }
+    },
     isSelected(item) {
       return this.defaultFontFamily === item.font
     },
@@ -87,11 +96,13 @@ export default {
     .ebook-popup-item {
       display: flex;
       padding: px2rem(15);
+
       .ebook-popup-item-text {
         flex: 1;
         font-size: px2rem(14);
         text-align: left;
-        &.selected{
+
+        &.selected {
           color: #fb2263;
           font-weight: bold;
         }
@@ -101,10 +112,12 @@ export default {
         flex: 1;
         text-align: right;
         font-size: px2rem(14);
-        &.selected{
+
+        &.selected {
           color: #fb2263;
           font-weight: bold;
         }
+
         .icon-check {}
       }
     }

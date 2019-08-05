@@ -73,6 +73,26 @@ export default {
         event.preventDefault()
         event.stopPropagation()
       })
+      //epubjs的钩子函数  渲染前注册样式
+      // this.rendition.hooks.content.register(contents => {
+      //   //promise回调操作
+      //   Promise.all([contents.addStylesheet('http://192.168.123.169:9000/project/fonts/daysOne.css'),
+      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/cabin.css'),
+      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/montserrat.css'),
+      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/tangerine.css')
+      //   ]).then(() => {
+      //     console.log('字体全部加载完毕....')
+      //   })
+      // })
+      //!!!!使用env文件失败!!!!
+      this.rendition.hooks.content.register(contents => {
+        Promise.all([
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/daysOne.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/cabin.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/montserrat.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/tangerine.css`)
+        ]).then(() => {})
+      })
     }
   },
   mounted() {
