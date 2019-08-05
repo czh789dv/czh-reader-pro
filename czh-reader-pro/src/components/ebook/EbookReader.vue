@@ -6,6 +6,10 @@
 
 <script>
 import {
+  getFontFamily,
+  saveFontFamily
+} from '../../utils/localStorage'
+import {
   ebookMixin
 } from '../../utils/mixin'
 import Epub from 'epubjs'
@@ -54,8 +58,20 @@ export default {
         method: 'default'
       })
       //显示电子书
-      this.rendition.display()
-      console.log(111)
+      this.rendition.display().then(() => {
+        //通过回调函数来获取字体
+        let font = getFontFamily(this.fileName)
+        //字体不存在
+        if (!font) {
+          //将默认字体保存到localStorage
+          saveFontFamily(this.fileName, this.defaultFontFamily)
+        } else {
+          //字体存在  页面渲染新字体
+          this.rendition.themes.font(font)
+          //在vuex中更改字体
+          this.setDefaultFontFamily(font)
+        }
+      })
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp

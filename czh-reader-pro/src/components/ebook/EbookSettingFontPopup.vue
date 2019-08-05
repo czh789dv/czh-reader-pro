@@ -21,16 +21,32 @@
 
 <script>
 import {
+  // setLocalStorage,
+  // getLocalStorage,
+  // removeLocalStorage,
+  // clearLocalStorage,
+  saveFontFamily
+} from '../../utils/localStorage'
+import {
   FONT_FAMILY
 } from '../../utils/book'
 import {
   ebookMixin
 } from '../../utils/mixin'
 export default {
+  // mounted() {
+  //   setLocalStorage(this.flieName, this.defaultFontFamily)
+  //   console.log(getLocalStorage(this.flieName))
+  //   setLocalStorage('a', '1')
+  //   setLocalStorage('b', '2')
+  //   removeLocalStorage('a')
+  //   clearLocalStorage()
+  // },
   mixins: [ebookMixin],
   methods: {
     setFontFamily(font) {
       this.setDefaultFontFamily(font)
+      saveFontFamily(this.fileName, font)
       if (font === 'Default') {
         this.currentBook.rendition.themes.font('Times New Roman')
       } else {
