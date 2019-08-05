@@ -39,6 +39,7 @@ export default {
     toggleTitleAndMenu() {
       if (this.menuVisible) {
         this.setSettingVisible(-1)
+        this.setFontFamilyVisible(false)
       }
       // this.$store.dispatch('setmenuVisible', !this.menuVisible)
       this.setMenuVisible(!this.menuVisible)
@@ -65,6 +66,13 @@ export default {
         this.setDefaultFontSize(fontSize)
       }
     },
+    initTheme() {
+      this.themeList.forEach(theme => {
+        //遍历并注册
+        this.rendition.themes.register(theme.name, theme.style)
+      })
+      this.rendition.themes.select(this.defaultTheme)
+    },
     initEpub() {
       //拼接URL
       const url = 'http://192.168.123.169:9000/project/epub/' + this.fileName + '.epub'
@@ -84,6 +92,7 @@ export default {
       //显示电子书
       this.rendition.display().then(() => {
         //通过回调函数来获取字体和主题
+        this.initTheme()
         this.initFontFamily()
         this.initFontSize()
       })
