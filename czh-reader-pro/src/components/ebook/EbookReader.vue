@@ -74,21 +74,23 @@ export default {
       if (!defaultTheme) {
         //如果没有则设置为 主题列表第一个
         defaultTheme = this.themeList[0].name
-        //保存到vuex中
-        this.setDefaultTheme(defaultTheme)
+
         //保存到缓存
         saveTheme(this.fileName, defaultTheme)
-      }
-
+      } //保存到vuex中
+      this.setDefaultTheme(defaultTheme)
       this.themeList.forEach(theme => {
         //遍历并注册
         this.rendition.themes.register(theme.name, theme.style)
       })
       this.rendition.themes.select(defaultTheme)
     },
+
     initEpub() {
       //拼接URL
-      const url = 'http://192.168.123.169:9000/project/epub/' + this.fileName + '.epub'
+      const url =
+        process.env.VUE_APP_RES_URL +
+        /epub/ + this.fileName + '.epub'
       console.log(url)
       //创建电子书实例
       this.book = new Epub(url)
@@ -108,6 +110,8 @@ export default {
         this.initTheme()
         this.initFontFamily()
         this.initFontSize()
+        //全局样式
+        this.initGlobalStyle()
       })
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
@@ -140,10 +144,10 @@ export default {
       //!!!!使用env文件失败!!!!
       this.rendition.hooks.content.register(contents => {
         Promise.all([
-          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/daysOne.css`),
-          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/cabin.css`),
-          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/montserrat.css`),
-          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/project/fonts/tangerine.css`)
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/cabin.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`),
+          contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`)
         ]).then(() => {})
       })
     }

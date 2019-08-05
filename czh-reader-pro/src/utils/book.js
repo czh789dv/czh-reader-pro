@@ -62,3 +62,14 @@ export function themeList(vue) {
     }
   ]
 }
+//添加动态CSS
+export function addCss(href) {
+  //创建link标签
+  const link = document.createElement('link')
+  //添加属性   样式表 CSS 链接
+  link.setAttribute('rel', 'stylesheet')
+  link.setAttribute('type', 'text/css')
+  link.setAttribute('href', href)
+  //获取head标签 第0个 元素 在最后面添加子标签
+  document.getElementsByTagName('head')[0].appendChild(link)
+}
