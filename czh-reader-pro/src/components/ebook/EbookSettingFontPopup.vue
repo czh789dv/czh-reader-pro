@@ -5,7 +5,7 @@
         <div class="ebook-popup-title-icon" @click="hide">
           <span class="iconfont icon-down2"></span>
         </div>
-        <div class="ebook-popup-title-text">选择字体</div>
+        <div class="ebook-popup-title-text">{{$t('book.selectFont')}}</div>
       </div>
       <div class="ebook-popup-list-wrapper">
         <div class="ebook-popup-item" v-for="(item, key) in fontFamilyList" :key="key" @click="setFontFamily(item.font)">
