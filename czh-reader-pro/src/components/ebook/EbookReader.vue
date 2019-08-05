@@ -7,7 +7,9 @@
 <script>
 import {
   getFontFamily,
-  saveFontFamily
+  saveFontFamily,
+  getFontSize,
+  saveFontSize
 } from '../../utils/localStorage'
 import {
   ebookMixin
@@ -41,6 +43,28 @@ export default {
       // this.$store.dispatch('setmenuVisible', !this.menuVisible)
       this.setMenuVisible(!this.menuVisible)
     },
+    initFontFamily() {
+      let font = getFontFamily(this.fileName)
+      //字体不存在
+      if (!font) {
+        //将默认字体保存到localStorage
+        saveFontFamily(this.fileName, this.defaultFontFamily)
+      } else {
+        //字体存在  页面渲染新字体
+        this.rendition.themes.font(font)
+        //在vuex中更改字体
+        this.setDefaultFontFamily(font)
+      }
+    },
+    initFontSize() {
+      let fontSize = getFontSize(this.fileName)
+      if (!fontSize) {
+        saveFontSize(this.fileName, this.defaultFontSize)
+      } else {
+        this.rendition.themes.fontSize(fontSize)
+        this.setDefaultFontSize(fontSize)
+      }
+    },
     initEpub() {
       //拼接URL
       const url = 'http://192.168.123.169:9000/project/epub/' + this.fileName + '.epub'
@@ -59,18 +83,9 @@ export default {
       })
       //显示电子书
       this.rendition.display().then(() => {
-        //通过回调函数来获取字体
-        let font = getFontFamily(this.fileName)
-        //字体不存在
-        if (!font) {
-          //将默认字体保存到localStorage
-          saveFontFamily(this.fileName, this.defaultFontFamily)
-        } else {
-          //字体存在  页面渲染新字体
-          this.rendition.themes.font(font)
-          //在vuex中更改字体
-          this.setDefaultFontFamily(font)
-        }
+        //通过回调函数来获取字体和主题
+        this.initFontFamily()
+        this.initFontSize()
       })
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
