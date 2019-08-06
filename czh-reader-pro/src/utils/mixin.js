@@ -3,7 +3,7 @@ import {
   mapActions
 } from 'vuex'
 import {
-  themeList, addCss
+  themeList, addCss, removeAllCss
 } from './book'
 
 export const ebookMixin = {
@@ -53,6 +53,7 @@ export const ebookMixin = {
       'setOffsetY',
       'setIsBookmark']),
     initGlobalStyle() {
+      removeAllCss()
       switch (this.defaultTheme) {
         case 'Default':
           addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_default.css`)
