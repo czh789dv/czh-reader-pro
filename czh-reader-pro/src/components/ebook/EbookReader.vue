@@ -85,17 +85,7 @@ export default {
       })
       this.rendition.themes.select(defaultTheme)
     },
-
-    initEpub() {
-      //拼接URL
-      const url =
-        process.env.VUE_APP_RES_URL +
-        /epub/ + this.fileName + '.epub'
-      console.log(url)
-      //创建电子书实例
-      this.book = new Epub(url)
-      this.setCurrentBook(this.book)
-      console.log(this.book)
+    initRendition() {
       //绑定DOM对象 渲染电子书
       this.rendition = this.book.renderTo('read', {
         //设置渲染为屏幕的宽高
@@ -112,23 +102,6 @@ export default {
         this.initFontSize()
         //全局样式
         this.initGlobalStyle()
-      })
-      this.rendition.on('touchstart', event => {
-        this.touchStartX = event.changedTouches[0].clientX
-        this.touchStartTime = event.timeStamp
-      })
-      this.rendition.on('touchend', event => {
-        const offsetX = event.changedTouches[0].clientX - this.touchStartX
-        const time = event.timeStamp - this.touchStartTime
-        if (time < 500 && offsetX > 40) {
-          this.prevPage()
-        } else if (time < 500 && offsetX < -40) {
-          this.nextPage()
-        } else {
-          this.toggleTitleAndMenu()
-        }
-        event.preventDefault()
-        event.stopPropagation()
       })
       //epubjs的钩子函数  渲染前注册样式
       // this.rendition.hooks.content.register(contents => {
@@ -149,6 +122,46 @@ export default {
           contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/montserrat.css`),
           contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/tangerine.css`)
         ]).then(() => {})
+      })
+    },
+    initGesture() {
+      this.rendition.on('touchstart', event => {
+        this.touchStartX = event.changedTouches[0].clientX
+        this.touchStartTime = event.timeStamp
+      })
+      this.rendition.on('touchend', event => {
+        const offsetX = event.changedTouches[0].clientX - this.touchStartX
+        const time = event.timeStamp - this.touchStartTime
+        if (time < 500 && offsetX > 40) {
+          this.prevPage()
+        } else if (time < 500 && offsetX < -40) {
+          this.nextPage()
+        } else {
+          this.toggleTitleAndMenu()
+        }
+        event.preventDefault()
+        event.stopPropagation()
+      })
+    },
+
+    initEpub() {
+      //拼接URL
+      const url =
+        process.env.VUE_APP_RES_URL +
+        /epub/ + this.fileName + '.epub'
+      console.log(url)
+      //创建电子书实例
+      this.book = new Epub(url)
+      this.setCurrentBook(this.book)
+      console.log(this.book)
+      this.initRendition()
+      this.initGesture()
+      //book钩子函数
+      this.book.ready.then(() => {
+        //分页总数==750 *页面宽度/375 *字号/16
+        return this.book.locations.generate(750 * (window.innerHeight / 375) * (getFontSize(this.fileName) / 16))
+      }).then((locations) => {
+        this.setBookAvailable(true)
       })
     }
   },
