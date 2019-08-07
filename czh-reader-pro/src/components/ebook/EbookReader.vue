@@ -11,7 +11,8 @@ import {
   getFontSize,
   saveFontSize,
   getTheme,
-  saveTheme
+  saveTheme,
+  getLocation
 } from '../../utils/localStorage'
 import {
   ebookMixin
@@ -28,13 +29,17 @@ export default {
     },
     prevPage() {
       if (this.rendition) {
-        this.rendition.prev()
+        this.rendition.prev().then(() => {
+          this.refreshLocation()
+        })
         this.hideTitleAndMenu()
       }
     },
     nextPage() {
       if (this.rendition) {
-        this.rendition.next()
+        this.rendition.next().then(() => {
+          this.refreshLocation()
+        })
         this.hideTitleAndMenu()
       }
     },
@@ -94,15 +99,37 @@ export default {
         //微信设置
         method: 'default'
       })
-      //显示电子书
-      this.rendition.display().then(() => {
-        //通过回调函数来获取字体和主题
-        this.initTheme()
-        this.initFontFamily()
-        this.initFontSize()
-        //全局样式
-        this.initGlobalStyle()
-      })
+      // //显示电子书
+      // this.rendition.display().then(() => {
+      //   //通过回调函数来获取字体和主题
+      //   this.initTheme()
+      //   this.initFontFamily()
+      //   this.initFontSize()
+      //   //全局样式
+      //   this.initGlobalStyle()
+      //   this.refreshLocation()
+      // })
+      const localtion = getLocation(this.fileName)
+      if (localtion) {
+        this.display(localtion, () => {
+          this.initTheme()
+          this.initFontFamily()
+          this.initFontSize()
+          //全局样式
+          this.initGlobalStyle()
+          this.refreshLocation()
+        })
+      } else {
+        this.display(null, () => {
+          this.initTheme()
+          this.initFontFamily()
+          this.initFontSize()
+          //全局样式
+          this.initGlobalStyle()
+          this.refreshLocation()
+        })
+      }
+
       //epubjs的钩子函数  渲染前注册样式
       // this.rendition.hooks.content.register(contents => {
       //   //promise回调操作
@@ -161,6 +188,7 @@ export default {
         //分页总数==750 *页面宽度/375 *字号/16
         return this.book.locations.generate(750 * (window.innerHeight / 375) * (getFontSize(this.fileName) / 16))
       }).then((locations) => {
+        this.refreshLocation()
         this.setBookAvailable(true)
       })
     }

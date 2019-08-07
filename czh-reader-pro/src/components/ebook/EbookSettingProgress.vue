@@ -3,7 +3,7 @@
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 2">
       <div class="setting-progress">
         <div class="read-time-warpper">
-          <span class="read-time-text"></span>
+          <span class="read-time-text">{{getReadTimeText()}}</span>
           <span class="iconfont icon-forward"></span>
         </div>
         <div class="progress-wrapper">
@@ -34,17 +34,22 @@ import {
 
 export default {
   computed: {
-    getSectionName(){
-      if (this.section){
+    getSectionName() {
+      if (this.section) {
         const sectionInfo = this.currentBook.section(this.section)
         if (sectionInfo && sectionInfo.href) {
+          console.log((sectionInfo.href).label)
           return this.currentBook.navigation.get(sectionInfo.href).label
         }
       }
+      return null
     }
   },
   mixins: [ebookMixin],
   methods: {
+    getReadTimeText() {
+
+    },
     onProgressChange(progress) {
       this.setProgress(progress).then(() => {
         this.displayProgress()
@@ -58,7 +63,9 @@ export default {
     },
     displayProgress() {
       const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100)
-      this.currentBook.rendition.display(cfi)
+      // this.currentBook.rendition.display(cfi).then(() => {
+      //   this.refreshLocation()// })
+      this.display(cfi)
     },
     updateProgreeBg() {
       this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
@@ -84,17 +91,10 @@ export default {
       //如果存在
       if (sectionInfo && sectionInfo.href) {
         //渲染
-        this.currentBook.rendition.display(sectionInfo.href)
-        this.refreshLocation()
+        // this.currentBook.rendition.display(sectionInfo.href)
+        // this.refreshLocation()
+        this.display(sectionInfo.href)
       }
-    },
-    refreshLocation(){
-      //获取地址信息
-      const currentLocation =this.currentBook.rendition.currentLocation()
-      //获取页面第一个字的cfi位置信息
-      const progress =this.currentBook.locations.percentageFromCfi(currentLocation.start.cfi)
-      //设置进度
-      this.setProgress(Math.floor(progress * 100))
     }
   }
 }
@@ -182,7 +182,8 @@ export default {
       padding: 0 px2rem(15);
       box-sizing: border-box;
       @include center;
-      .progress-section-text{
+
+      .progress-section-text {
         @include ellipse;
       }
 
