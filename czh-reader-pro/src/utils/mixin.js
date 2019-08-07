@@ -35,8 +35,7 @@ export const ebookMixin = {
       if (this.section) {
         const sectionInfo = this.currentBook.section(this.section)
         if (sectionInfo && sectionInfo.href) {
-          console.log((sectionInfo.href).label)
-          return this.currentBook.navigation.get(sectionInfo.href)
+          return this.currentBook.navigation.get(sectionInfo.href).label
         }
       }
       return null
@@ -106,6 +105,12 @@ export const ebookMixin = {
           if (cb) cb()
         })
       }
+    },
+    hideTitleAndMenu() {
+      // this.$store.dispatch('setmenuVisible', false)
+      this.setMenuVisible(false)
+      this.setSettingVisible(-1)
+      this.setFontFamilyVisible(false)
     }
   }
 }

@@ -22,11 +22,6 @@ global.ePub = Epub
 export default {
   mixins: [ebookMixin],
   methods: {
-    hideTitleAndMenu() {
-      // this.$store.dispatch('setmenuVisible', false)
-      this.setMenuVisible(false)
-      this.setSettingVisible(-1)
-    },
     prevPage() {
       if (this.rendition) {
         this.rendition.prev().then(() => {
