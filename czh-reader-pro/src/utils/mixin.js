@@ -30,8 +30,17 @@ export const ebookMixin = {
       'isBookmark']),
     themeList() {
       return themeList(this)
+    },
+    getSectionName() {
+      if (this.section) {
+        const sectionInfo = this.currentBook.section(this.section)
+        if (sectionInfo && sectionInfo.href) {
+          console.log((sectionInfo.href).label)
+          return this.currentBook.navigation.get(sectionInfo.href)
+        }
+      }
+      return null
     }
-
   },
   methods: {
     ...mapActions(['setFileName',

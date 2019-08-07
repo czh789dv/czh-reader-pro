@@ -31,24 +31,35 @@
 import {
   ebookMixin
 } from '../../utils/mixin'
+import {
+  getReadTime
+} from '../../utils/localStorage'
 
 export default {
-  computed: {
-    getSectionName() {
-      if (this.section) {
-        const sectionInfo = this.currentBook.section(this.section)
-        if (sectionInfo && sectionInfo.href) {
-          console.log((sectionInfo.href).label)
-          return this.currentBook.navigation.get(sectionInfo.href).label
-        }
-      }
-      return null
-    }
-  },
+  // computed: {
+  //   getSectionName() {
+  //     if (this.section) {
+  //       const sectionInfo = this.currentBook.section(this.section)
+  //       if (sectionInfo && sectionInfo.href) {
+  //         console.log((sectionInfo.href).label)
+  //         return this.currentBook.navigation.get(sectionInfo.href)
+  //       }
+  //     }
+  //     return null
+  //   }
+  // },
   mixins: [ebookMixin],
   methods: {
     getReadTimeText() {
-
+      return this.$t('book.haveRead').replace('$1', this.getReadTimeByMinute(this.fileName))
+    },
+    getReadTimeByMinute() {
+      const readTime = getReadTime(this.fileName)
+      if (!readTime) {
+        return 0
+      } else {
+        return Math.ceil(readTime / 60)
+      }
     },
     onProgressChange(progress) {
       this.setProgress(progress).then(() => {
