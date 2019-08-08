@@ -126,17 +126,6 @@ export default {
       }
 
       //epubjs的钩子函数  渲染前注册样式
-      // this.rendition.hooks.content.register(contents => {
-      //   //promise回调操作
-      //   Promise.all([contents.addStylesheet('http://192.168.123.169:9000/project/fonts/daysOne.css'),
-      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/cabin.css'),
-      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/montserrat.css'),
-      //     contents.addStylesheet('http://192.168.123.169:9000/project/fonts/tangerine.css')
-      //   ]).then(() => {
-      //     console.log('字体全部加载完毕....')
-      //   })
-      // })
-      //!!!!使用env文件失败!!!!
       this.rendition.hooks.content.register(contents => {
         Promise.all([
           contents.addStylesheet(`${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`),
@@ -165,6 +154,19 @@ export default {
         event.stopPropagation()
       })
     },
+    parseBook() {
+      this.book.loaded.cover.then(cover => {
+        this.book.archive.createUrl(cover).then(url => {
+          // console.log(url)
+          //图片 保存到Vuex
+          this.setCover(url)
+        })
+      })
+      this.book.loaded.metadata.then(metadata => {
+        //基本信息 保存到Vuex
+        this.setMetadata(metadata)
+      })
+    },
 
     initEpub() {
       //拼接URL
@@ -178,6 +180,8 @@ export default {
       console.log(this.book)
       this.initRendition()
       this.initGesture()
+      //解析电子书 获取图片
+      this.parseBook()
       //book钩子函数
       this.book.ready.then(() => {
         //分页总数==750 *页面宽度/375 *字号/16

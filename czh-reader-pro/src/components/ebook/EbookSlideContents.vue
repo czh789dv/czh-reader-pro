@@ -11,16 +11,16 @@
     </div>
     <div class="slide-contents-book-wrapper">
       <div class="slide-contents-book-img-wrapper">
-        <img src="cover" class="slide-contents-book-img">
+        <img :src="cover" class="slide-contents-book-img">
       </div>
       <div class="slide-contents-book-info-wrapper">
-        <div class="slide-contents-book-title"></div>
-        <div class="slide-contents-book-author"></div>
+        <div class="slide-contents-book-title">{{metadata.title}}</div>
+        <div class="slide-contents-book-author">{{metadata.creator}}</div>
       </div>
       <div class="slide-contents-book-progress-wrapper">
         <div class="slide-contents-book-progress">
           <span class="progress">{{progress + '%'}}</span>
-          <div class="progress-text">{{$t('book.haveRead2')}}</div>
+          <span class="progress-text">{{$t('book.haveRead2')}}</span>
         </div>
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
@@ -57,6 +57,7 @@ export default {
 
 .ebook-slide-content {
   width: 100%;
+  font-size: 0;
 
   .slide-contents-search-wrapper {
     display: flex;
@@ -97,6 +98,67 @@ export default {
       font-size: px2rem(14);
       @include right;
 
+    }
+  }
+
+  .slide-contents-book-wrapper {
+    display: flex;
+    width: 100%;
+    height: px2rem(90);
+    padding: px2rem(10) px2rem(5) px2rem(20) px2rem(5);
+    box-sizing: border-box;
+
+    .slide-contents-book-img-wrapper {
+      flex: 0 0 px2rem(45);
+      padding: 0 px2rem(10);
+
+      .slide-contents-book-img {
+        width: px2rem(50);
+        height: px2rem(66);
+      }
+    }
+
+    .slide-contents-book-info-wrapper {
+      flex: 1;
+      padding: 0 px2rem(5);
+      box-sizing: border-box;
+
+      .slide-contents-book-title {
+        width: px2rem(120);
+        font-size: px2rem(12);
+        line-height: px2rem(16);
+        @include ellipsis1(3);
+      }
+
+      .slide-contents-book-author {
+        width: px2rem(120);
+        font-size: px2rem(10);
+        margin-top: px2rem(8);
+        @include ellipse;
+      }
+    }
+
+    .slide-contents-book-progress-wrapper {
+      flex: 0 0 px2rem(70);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+
+      .slide-contents-book-progress {
+        .progress {
+          font-size: px2rem(14);
+        }
+
+        .progress-text {
+          font-size: px2rem(12);
+        }
+      }
+
+      .slide-contents-book-time {
+        font-size: px2rem(12);
+        margin-top:px2rem(8);
+      }
     }
   }
 }
