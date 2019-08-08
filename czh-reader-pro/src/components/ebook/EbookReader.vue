@@ -170,19 +170,17 @@ export default {
         this.setMetadata(metadata)
       })
       this.book.loaded.navigation.then(nav => {
+        //获取目录数据 并扁平化
         const navItem = flatten(nav.toc)
 
         function find(item, level = 0) {
-          if (!item.parent) {
-            return level
-          } else {
-            return find(navItem.filter(parentItem => parentItem.id === item.parent[0], ++level))
-          }
+          return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level)
         }
         navItem.forEach(item => {
           item.level = find(item)
         })
         console.log(navItem)
+        this.setNavigation(navItem)
       })
     },
 

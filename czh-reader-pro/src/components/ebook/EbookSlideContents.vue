@@ -25,16 +25,28 @@
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
     </div>
+    <scroll class="slide-contents-list" :top="156" :buttom="48" ref="scroll">
+      <div class="slide-contents-item" v-for="(item, index) in navigation" :key="index">
+        <span class="slide-contents-item-label" :style="contentItemStyle(item)" :class="{'selected': section === index }" @click="dispalyNavigation(item.href)">{{item.label}}</span>
+        <span class="slide-contents-item-page"></span>
+      </div>
+    </scroll>
   </div>
 </template>
 
 <script>
+import Scroll from '../common/Scroll'
 import {
   ebookMixin
 } from '../../utils/mixin'
+import {
+  px2rem
+} from '../../utils/utils'
 export default {
   mixins: [ebookMixin],
-  components: {},
+  components: {
+    Scroll
+  },
   data() {
     return {
       searchVisible: false
@@ -42,6 +54,16 @@ export default {
     }
   },
   methods: {
+    dispalyNavigation(target) {
+      this.display(target, () => {
+        this.hideTitleAndMenu()
+      })
+    },
+    contentItemStyle(item) {
+      return {
+        marginLeft: `${px2rem(item.level * 15)}rem`
+      }
+    },
     showSearchPage() {
       this.searchVisible = true
     },
@@ -157,8 +179,28 @@ export default {
 
       .slide-contents-book-time {
         font-size: px2rem(12);
-        margin-top:px2rem(8);
+        margin-top: px2rem(8);
       }
+    }
+  }
+
+  .slide-contents-list {
+    padding: 0 px2rem(15);
+    box-sizing: border-box;
+
+    .slide-contents-item {
+      display: flex;
+      padding: px2rem(15) 0;
+      box-sizing: border-box;
+      font-size: px2rem(14);
+
+      // @include ellipse;
+      .slide-contents-item-label {
+        flex: 1;
+        line-height: px2rem(16);
+      }
+
+      .slide-contents-item-page {}
     }
   }
 }

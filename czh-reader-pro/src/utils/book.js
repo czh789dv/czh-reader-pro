@@ -107,5 +107,6 @@ export function getReadTimeByMinute(fileName) {
 }
 
 export function flatten(array) {
+  //递归 将树状数据扁平化 返回到一个数组
   return [].concat(...array.map(item => [].concat(item, ...flatten(item.subitems))))
 }
