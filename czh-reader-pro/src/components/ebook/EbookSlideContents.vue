@@ -27,7 +27,7 @@
     </div>
     <scroll class="slide-contents-list" :top="156" :buttom="48" ref="scroll" v-show="!searchVisible">
       <div class="slide-contents-item" v-for="(item, index) in navigation" :key="index">
-        <span class="slide-contents-item-label" :style="contentItemStyle(item)" :class="{'selected': section === index }" @click="dispalyNavigation(item.href)">{{item.label}}</span>
+        <span class="slide-contents-item-label" :style="contentItemStyle(item)" :class="{'selected': section === index }" @click="displayContent(item.href)">{{item.label}}</span>
         <span class="slide-contents-item-page"></span>
       </div>
     </scroll>
@@ -87,11 +87,11 @@ export default {
         //将结果的二维数据 转化为一维数据
       ).then(results => Promise.resolve([].concat.apply([], results)))
     },
-    dispalyNavigation(target) {
-      this.display(target, () => {
-        this.hideTitleAndMenu()
-      })
-    },
+    // dispalyNavigation(target) {
+    //   this.display(target, () => {
+    //     this.hideTitleAndMenu()
+    //   })
+    // },
     contentItemStyle(item) {
       return {
         marginLeft: `${px2rem(item.level * 15)}rem`
