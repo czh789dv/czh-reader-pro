@@ -1,5 +1,47 @@
 import { getReadTime } from './localStorage'
 
+export const LINE_WIDTH = [
+  {
+    value: 32
+  },
+  {
+    value: 32
+  },
+  {
+    value: 32
+  },
+  {
+    value: 32
+  },
+  {
+    value: 32
+  },
+  {
+    value: 32
+  }
+]
+
+export const MASK_WIDTH = [
+  {
+    value: 0
+  },
+  {
+    value: 0
+  },
+  {
+    value: 0
+  },
+  {
+    value: 0
+  },
+  {
+    value: 0
+  },
+  {
+    value: 0
+  }
+]
+
 export const FONT_SIZE_LIST = [
   { fontSize: 12 },
   { fontSize: 14 },
