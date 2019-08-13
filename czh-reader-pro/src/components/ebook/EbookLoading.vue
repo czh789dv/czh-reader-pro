@@ -46,14 +46,20 @@ export default {
     }
   },
   mounted() {
+    //定时器
     this.task = setInterval(() => {
+      //遍历mask
       this.$refs.mask.forEach((item, index) => {
+        //获取数据
         const mask = this.$refs.mask[index]
         const line = this.$refs.line[index]
         let maskWidth = this.maskWidth[index]
         let lineWidth = this.lineWidth[index]
+        //判断是否第一条
         if (index === 0) {
+          //如果是第一条 add为ture(判断是否增加或者减少) 并且最大宽度低于32(设置最大边界)
           if (this.add && maskWidth.value < 32) {
+            //增加蒙版 减少实线
             maskWidth.value++
             lineWidth.value--
           } else if (!this.add && lineWidth.value < 32) {
@@ -61,8 +67,10 @@ export default {
             lineWidth.value++
           }
         } else {
+          //不是第一条
           if (this.add && maskWidth.value < 32) {
             let preMaskWidth = this.maskWidth[index - 1]
+            //
             if (preMaskWidth.value >= 16) {
               maskWidth.value++
               lineWidth.value--
@@ -75,10 +83,12 @@ export default {
             }
           }
         }
+        //style动态设置width和flex(向右距离)
         mask.style.width = `${px2rem(maskWidth.value)}rem`
         mask.style.flex = `0 0 ${px2rem(maskWidth.value)}rem`
         line.style.width = `${px2rem(lineWidth.value)}rem`
         line.style.flex = `0 0 ${px2rem(lineWidth.value)}rem`
+        //判断是否
         if (index === this.maskWidth.length - 1) {
           if (this.add) {
             if (maskWidth.value === 32) {
