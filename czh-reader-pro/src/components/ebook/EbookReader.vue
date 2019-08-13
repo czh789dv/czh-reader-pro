@@ -1,6 +1,7 @@
 <template>
   <div class="ebook-reader">
     <div id="read"></div>
+    <div class="ebook-reader-mask" @click="onmaskclick" @touchmove="move" @touchend="moveEnd"></div>
   </div>
 </template>
 
@@ -25,6 +26,37 @@ global.ePub = Epub
 export default {
   mixins: [ebookMixin],
   methods: {
+    move(e) {
+      //设置初始Y为0
+      let offsetY = 0
+      if (this.firstOffsetY) {
+        //获取Y轴偏移量
+        offsetY = e.changedTouches[0].clientY - this.firstOffsetY
+        //传入vueX
+        this.setOffsetY(offsetY)
+      } else {
+        this.firstOffsetY = e.changedTouches[0].clientY
+      }
+      //禁止冒泡
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    moveEnd(e) {
+      //结束后 设置为0
+      this.setOffsetY(0)
+      this.firstOffsetY = null
+    },
+    onmaskclick(e) {
+      const offsetX = e.offsetX
+      const width = window.innerWidth
+      if (offsetX > 0 && offsetX < width * 0.3) {
+        this.prevPage()
+      } else if (offsetX > 0 && offsetX > width * 0.7) {
+        this.nextPage()
+      } else {
+        this.toggleTitleAndMenu()
+      }
+    },
     prevPage() {
       if (this.rendition) {
         this.rendition.prev().then(() => {
@@ -195,7 +227,7 @@ export default {
       this.setCurrentBook(this.book)
       console.log(this.book)
       this.initRendition()
-      this.initGesture()
+      // this.initGesture()
       //解析电子书 获取图片
       this.parseBook()
       //book钩子函数
@@ -231,4 +263,22 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/styles/global";
+
+.ebook-reader {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+
+  .ebook-reader-mask {
+    width: 100%;
+    height: 100%;
+    z-index: 150;
+    position: absolute;
+    background: transparent;
+    top: 0;
+    left: 0;
+  }
+}
 </style>
