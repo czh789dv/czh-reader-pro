@@ -1,11 +1,11 @@
 <template>
   <div class="ebook-bookmark" ref="bookmark">
     <div class="ebook-boormark-text-wrapper">
-      <div class="ebook-bookmark-dowm-wrapper">
+      <div class="ebook-bookmark-dowm-wrapper" ref="icondown">
         <span class="iconfont icon-down"></span></div>
       <div class="ebook-bookmark-text">{{text}}</div>
     </div>
-    <div class="ebook-bookmark-icon-wrapper">
+    <div class="ebook-bookmark-icon-wrapper" :style='isFixed ? fixedStyle : {}'>
       <bookmark :color="color" :width="15" :height="35"></bookmark>
     </div>
   </div>
@@ -29,18 +29,89 @@ export default {
     },
     threshold() {
       return realPx(55)
+    },
+    fixedStyle() {
+      return {
+        position: 'fixed',
+        top: 0,
+        right: `${(window.innerWidth - this.$refs.bookmark.clientWidth) / 2}px`
+      }
+    }
+  },
+  methods: {
+    addBookmark() {},
+    removeBookmark() {},
+    //状态4: 归为
+    restore() {
+      setTimeout(() => {
+        this.$refs.bookmark.style.top = `${-this.height}px`
+        this.$refs.icondown.style.transform = 'rotate(0deg)'
+      }, 200)
+      if (this.isFixed) {
+        this.setIsBookmark(true)
+        this.addBookmark()
+      } else {
+        this.setIsBookmark(false)
+        this.removeBookmark()
+      }
+    },
+    //状态1 初始化
+    beforeHeight() {
+      //国际化字体 并给予书签颜色
+      if (this.isBookmark) {
+        this.text = this.$t('book.pulldownDeleteMark')
+        this.color = BLUE
+        this.isFixed = true
+      } else {
+        this.text = this.$t('book.pulldownAddMark')
+        this.color = WHITE
+        this.isFixed = false
+      }
+    },
+    //状态2:到达临界值之前
+    beforeThreshold(v) {
+      this.$refs.bookmark.style.top = `${-v}px`
+      this.beforeHeight()
+      //重置箭头
+      const icondown = this.$refs.icondown
+      if (icondown.style.transform === 'rotate(180deg)') {
+        icondown.style.transform = 'rotate(0deg)'
+      }
+    },
+    //状态3: 到达临界值
+    afterThreshold(v) {
+      this.$refs.bookmark.style.top = `${-v}px`
+      //国际化文字
+      if (this.isBookmark) {
+        this.text = this.$t('book.releaseDeleteMark')
+        this.color = WHITE
+        this.isFixed = false
+      } else {
+        this.text = this.$t('book.releaseAddMark')
+        this.color = BLUE
+        this.isFixed = true
+      }
+      const icondown = this.$refs.icondown
+      //更改箭头朝向
+      if (icondown.style.transform === '' || icondown.style.transform === 'rotate(0deg)') {
+        icondown.style.transform = 'rotate(180deg)'
+      }
     }
   },
   watch: {
     offsetY(v) {
+      if (!this.bookAvailable || this.menuVisible || this.settingVisible >= 0) {
+        //未加载完成 目录存在 菜单存在 不监听  减少资源浪费
+        return
+      }
       if (v >= this.height && v <= this.threshold) {
-        this.$refs.bookmark.style.top = `${-v}px`
-        this.text = this.$t('book.pulldownAddMark')
-        this.color = WHITE
+        this.beforeThreshold(v)
       } else if (v >= this.threshold) {
-        this.$refs.bookmark.style.top = `${-v}px`
-        this.text = this.$t('book.releaseAddMark')
-        this.color = BLUE
+        this.afterThreshold(v)
+      } else if (v > 0 && v < this.height) {
+        this.beforeHeight(v)
+      } else if (v === 0) {
+        this.restore()
       }
     }
   },
@@ -50,7 +121,8 @@ export default {
   data() {
     return {
       text: '',
-      color: WHITE
+      color: WHITE,
+      isFixed: false
     }
   }
 }
