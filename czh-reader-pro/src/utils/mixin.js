@@ -3,9 +3,15 @@ import {
   mapActions
 } from 'vuex'
 import {
-  themeList, addCss, removeAllCss, getReadTimeByMinute
+  themeList,
+  addCss,
+  removeAllCss,
+  getReadTimeByMinute
 } from './book'
-import { saveLocation } from './localStorage'
+import {
+  saveLocation,
+  getBookmark
+} from './localStorage'
 
 export const ebookMixin = {
   computed: {
@@ -27,7 +33,8 @@ export const ebookMixin = {
       'paginate',
       'pagelist',
       'offsetY',
-      'isBookmark']),
+      'isBookmark'
+    ]),
     themeList() {
       return themeList(this)
     },
@@ -61,7 +68,8 @@ export const ebookMixin = {
       'setPaginate',
       'setPagelist',
       'setOffsetY',
-      'setIsBookmark']),
+      'setIsBookmark'
+    ]),
     initGlobalStyle() {
       removeAllCss()
       switch (this.defaultTheme) {
@@ -94,6 +102,19 @@ export const ebookMixin = {
         this.setSection(currentLocation.start.index)
         //本地保存
         saveLocation(this.fileName, startCfi)
+        //判断书签
+        const bookmark = getBookmark(this.fileName)
+        // console.log(bookmark)
+        if (bookmark) {
+          //ES6 some方法 检索是否包含 返回bool
+          if (bookmark.some(item => item.cfi === startCfi)) {
+            this.setIsBookmark(true)
+          } else {
+            this.setIsBookmark(false)
+          }
+        } else {
+          this.setIsBookmark(false)
+        }
       }
     },
     display(target, cb) {

@@ -19,6 +19,10 @@ import {
   realPx
 } from '../../utils/utils'
 import Bookmark from '../common/BookMark'
+import {
+  getBookmark,
+  saveBookmark
+} from '../../utils/localStorage'
 const BLUE = '#346cbc'
 const WHITE = '#fff'
 export default {
@@ -39,8 +43,42 @@ export default {
     }
   },
   methods: {
-    addBookmark() {},
-    removeBookmark() {},
+    //添加书签
+    addBookmark() {
+      //从vueX获取
+      this.bookmark = getBookmark(this.fileName)
+      //不存在书签 新建列表
+      if (!this.bookmark) {
+        this.bookmark = []
+      }
+      //获取CFI 用正则匹配
+      const currentLoacation = this.currentBook.rendition.currentLocation()
+      const cfibase = currentLoacation.start.cfi.replace(/!.*/, '')
+      const cfistart = currentLoacation.start.cfi.replace(/.*!/, '').replace(/\)$/, '')
+      const cfiend = currentLoacation.end.cfi.replace(/.*!/, '').replace(/\)$/, '')
+      //拼接CFI
+      const cfirange = `${cfibase}!,${cfistart},${cfiend})`
+      //获取CFI队应的文本信息
+      this.currentBook.getRange(cfirange).then((range) => {
+        const text = range.toString().replace(/\s\s/g, '')
+        this.bookmark.push({
+          cfi: currentLoacation.start.cfi,
+          text: text
+        })
+        //保存到vueX
+        saveBookmark(this.fileName, this.bookmark)
+      })
+    },
+    removeBookmark() {
+      const currentLoacation = this.currentBook.rendition.currentLocation()
+      const cfi = currentLoacation.start.cfi
+      this.bookmark = getBookmark(this.fileName)
+      if (this.bookmark) {
+        //通过过滤器 如果相同就把所有内容删除
+        saveBookmark(this.fileName, this.bookmark.filter(item => item.cfi !== cfi))
+        this.setIsBookmark(false)
+      }
+    },
     //状态4: 归为
     restore() {
       setTimeout(() => {
@@ -112,6 +150,15 @@ export default {
         this.beforeHeight(v)
       } else if (v === 0) {
         this.restore()
+      }
+    },
+    isBookmark(isBookmark) {
+      //书签和显示 是相同的bool
+      this.isFixed = isBookmark
+      if (isBookmark) {
+        this.color = BLUE
+      } else {
+        this.color = WHITE
       }
     }
   },
