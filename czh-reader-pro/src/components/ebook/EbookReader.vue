@@ -1,7 +1,14 @@
 <template>
   <div class="ebook-reader">
     <div id="read"></div>
-    <div class="ebook-reader-mask" @click="onmaskclick" @touchmove="move" @touchend="moveEnd"></div>
+    <div
+      class="ebook-reader-mask"
+      @click="onmaskclick"
+      @touchmove="move"
+      @touchend="moveEnd"
+      @mousedown.left="onMouseEnter"
+      @mouseup.left="onMouseEnd"
+      @mousemove="onMouseMove"></div>
   </div>
 </template>
 
@@ -26,6 +33,47 @@ global.ePub = Epub
 export default {
   mixins: [ebookMixin],
   methods: {
+    //阶段1 - 鼠标进入
+    //阶段2 - 鼠标进入后 移动
+    //阶段3 - 鼠标移动后 松手
+    //阶段4 - 鼠标还原
+    onMouseEnter(e) {
+      this.mouseState = 1
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    onMouseEnd(e) {
+      if (this.mouseState === 2) {
+        this.setOffsetY(0)
+        this.firstOffsetY = null
+        this.mouseState = 3
+      } else {
+        this.mouseState = 4
+      }
+      const time = e.timeStamp - this.mouseStartTime
+      if (time < 100) {
+        this.mouseState = 4
+      }
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    onMouseMove(e) {
+      if (this.mouseState === 1) {
+        this.mouseState = 2
+      } else if (this.mouseState === 2) {
+        let offsetY = 0
+        if (this.firstOffsetY) {
+          //获取Y轴偏移量
+          offsetY = e.clientY - this.firstOffsetY
+          //传入vueX
+          this.setOffsetY(offsetY)
+        } else {
+          this.firstOffsetY = e.clientY
+        }
+      }
+      e.preventDefault()
+      e.stopPropagation()
+    },
     move(e) {
       //设置初始Y为0
       let offsetY = 0
