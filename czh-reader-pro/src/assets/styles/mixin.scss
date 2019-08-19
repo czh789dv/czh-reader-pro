@@ -1,4 +1,7 @@
 $ratio: 375/10;
+$animationTime: .2s;
+$animationType: linear;
+
 
 @function px2rem($px) {
   @return $px/$ratio+rem;
