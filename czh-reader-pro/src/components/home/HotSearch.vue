@@ -87,6 +87,7 @@ export default {
     .hot-search-text-wrapper {
       flex: 1;
       height: px2rem(35);
+      @include columnLeft;
       .text {
         // margin-top:px2rem(5);
         flex: 1;

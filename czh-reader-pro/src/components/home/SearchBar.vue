@@ -1,26 +1,37 @@
-<template><div>
-  <div class="page" :class="{'hide-title': !titleVisible, 'hide-shadow':!shadowVisible}">
-    <transition class="title-move">
-      <div class="searchbar-title-wrapper" v-show="titleVisible">
-        <div class="title-text-wrapper">
-          <span class="title-text title">{{$t('home.title')}}</span>
+<template>
+  <div>
+    <!-- 标题栏和搜索栏 -->
+    <!-- 帮顶样式 控制显示和阴影 -->
+    <div class="page" :class="{'hide-title': !titleVisible, 'hide-shadow':!shadowVisible}">
+      <!-- 标题栏动画 -->
+      <transition class="title-move">
+        <div class="searchbar-title-wrapper" v-show="titleVisible">
+          <!-- 标题栏文字 国际化显示 -->
+          <div class="title-text-wrapper">
+            <span class="title-text title">{{$t('home.title')}}</span>
+          </div>
+          <!-- 摇动图标 -->
+          <div class="title-icon-shake-wrapper">
+            <span class="iconfont icon-shake"></span>
+          </div>
         </div>
-        <div class="title-icon-shake-wrapper">
-          <span class="iconfont icon-shake"></span>
-        </div>
+      </transition>
+      <!-- 返回按钮 绝对布局 -->
+      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}">
+        <span class="iconfont icon-back" @click="hidehotsearch"></span>
       </div>
-    </transition>
-    <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}">
-      <span class="iconfont icon-back"></span>
-    </div>
-    <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">
-      <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
-      <div class="search-bar-input">
-        <span class="iconfont icon-search"></span>
-        <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText"></div>
+      <!-- 搜索框 -->
+      <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">
+        <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
+        <div class="search-bar-input">
+          <span class="iconfont icon-search"></span>
+          <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText"
+          @click="showhotsearch"></div>
 
-    </div></div>
-    <hot-search-list v-show="!hotSearchVisible" ref="hotSearch"></hot-search-list>
+      </div>
+    </div>
+    <!-- 热搜列表 -->
+    <hot-search-list v-show="hotSearchVisible" ref="hotSearch"></hot-search-list>
   </div>
 
 </template>
@@ -36,6 +47,7 @@ export default {
     HotSearchList
   },
   watch: {
+    // 监听器 监听Y轴滑动偏移量
     offsetY(offsetY) {
       // console.log(offsetY)
       if (offsetY > 0) {
@@ -48,6 +60,7 @@ export default {
     }
   },
   methods: {
+    // 显示影藏dom
     hidetitle() {
       this.titleVisible = false
     },
@@ -59,6 +72,12 @@ export default {
     },
     showshadow() {
       this.shadowVisible = true
+    },
+    hidehotsearch() {
+      this.hotSearchVisible = false
+    },
+    showhotsearch() {
+      this.hotSearchVisible = true
     }
   },
   data() {
@@ -81,7 +100,7 @@ export default {
   height: px2rem(94);
   z-index: 150;
 
-  box-shadow: 0 px2rem(5) px2rem(5) 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 px2rem(5) px2rem(5) 0 rgba(52, 97, 123, 0.15);
 
   &.hide-title {
     height: px2rem(52);

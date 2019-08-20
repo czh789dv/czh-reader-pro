@@ -24,7 +24,13 @@ $animationType: linear;
   justify-content: flex-end;
   align-items: center;
 }
-
+// 居左垂直排列
+@mixin columnLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
 @mixin ellipse {
   text-overflow: ellipsis;
   //显示为一行
