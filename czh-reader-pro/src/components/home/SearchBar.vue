@@ -1,4 +1,4 @@
-<template>
+<template><div>
   <div class="page" :class="{'hide-title': !titleVisible, 'hide-shadow':!shadowVisible}">
     <transition class="title-move">
       <div class="searchbar-title-wrapper" v-show="titleVisible">
@@ -18,18 +18,23 @@
       <div class="search-bar-input">
         <span class="iconfont icon-search"></span>
         <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText"></div>
-    </div>
 
+    </div></div>
+    <hot-search-list v-show="!hotSearchVisible" ref="hotSearch"></hot-search-list>
   </div>
+
 </template>
 
 <script>
+import HotSearchList from './HotSearchList'
 import {
   homeMixin
 } from '../../utils/mixin'
 export default {
   mixins: [homeMixin],
-  components: {},
+  components: {
+    HotSearchList
+  },
   watch: {
     offsetY(offsetY) {
       // console.log(offsetY)
@@ -60,7 +65,8 @@ export default {
     return {
       searchText: '',
       titleVisible: true,
-      shadowVisible: true
+      shadowVisible: true,
+      hotSearchVisible: false
     }
   }
 }
@@ -76,7 +82,8 @@ export default {
   z-index: 150;
 
   box-shadow: 0 px2rem(5) px2rem(5) 0 rgba(0, 0, 0, 0.15);
-   &.hide-title {
+
+  &.hide-title {
     height: px2rem(52);
   }
 
