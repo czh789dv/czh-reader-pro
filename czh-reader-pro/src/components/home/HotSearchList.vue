@@ -39,6 +39,7 @@ export default {
     onScroll(offsetY) {
       this.setHotSearchOffsetY(offsetY)
     },
+    //重置滚动条到初始位置
     reset() {
       this.$refs.scroll.scrollTo(0, 0)
     }

@@ -25,8 +25,7 @@
         <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
         <div class="search-bar-input">
           <span class="iconfont icon-search"></span>
-          <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText"
-          @click="showhotsearch"></div>
+          <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText" @click="showhotsearch"></div>
 
       </div>
     </div>
@@ -57,15 +56,32 @@ export default {
         this.showtitle()
         this.hideshadow()
       }
+    },
+    HotSearchOffsetY(offsetY) {
+      if (offsetY > 0) {
+        this.showshadow()
+      } else {
+        this.hideshadow()
+      }
     }
   },
   methods: {
     // 显示影藏dom
     hidetitle() {
+      if (this.offsetY > 0) {
+        this.showshadow()
+      } else {
+        this.hideshadow()
+      }
       this.titleVisible = false
     },
     showtitle() {
       this.titleVisible = true
+      this.hideshadow()
+      //显示完成后回调函数调用 子组件的reset方法
+      this.$nextTick(() => {
+        this.$refs.hotSearch.reset()
+      })
     },
     hideshadow() {
       this.shadowVisible = false
@@ -137,6 +153,7 @@ export default {
   }
 
   .title-icon-back-wrapper {
+    z-index: 200;
     position: absolute;
     left: px2rem(15);
     top: 0;
