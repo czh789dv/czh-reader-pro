@@ -1,10 +1,9 @@
 $ratio: 375/10;
-$animationTime: .2s;
+$animationTime: 0.2s;
 $animationType: linear;
 
-
 @function px2rem($px) {
-  @return $px/$ratio+rem;
+  @return $px/$ratio + rem;
 }
 
 @mixin center {
@@ -37,6 +36,15 @@ $animationType: linear;
   overflow: hidden;
   white-space: nowrap;
 }
+@mixin absCenter {
+  //绝对定位居中
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
 
 @mixin ellipsis1($line) {
   display: -webkit-box;
@@ -47,12 +55,12 @@ $animationType: linear;
   text-overflow: ellipsis;
   word-break: keep-all;
 }
-.iconfont{
-  color:#666;
+.iconfont {
+  color: #666;
   font-size: px2rem(16);
 }
-.title{
-  color:#666;
+.title {
+  color: #666;
   font-size: px2rem(16);
   font-weight: bold;
 }

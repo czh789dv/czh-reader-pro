@@ -11,7 +11,7 @@
             <span class="title-text title">{{$t('home.title')}}</span>
           </div>
           <!-- 摇动图标 -->
-          <div class="title-icon-shake-wrapper">
+          <div class="title-icon-shake-wrapper" @click="showFlapCard">
             <span class="iconfont icon-shake"></span>
           </div>
         </div>
@@ -66,6 +66,9 @@ export default {
     }
   },
   methods: {
+    showFlapCard() {
+      this.setFlapCardVisible(true)
+    },
     // 显示影藏dom
     hidetitle() {
       if (this.offsetY > 0) {
@@ -78,10 +81,6 @@ export default {
     showtitle() {
       this.titleVisible = true
       this.hideshadow()
-      //显示完成后回调函数调用 子组件的reset方法
-      this.$nextTick(() => {
-        this.$refs.hotSearch.reset()
-      })
     },
     hideshadow() {
       this.shadowVisible = false
@@ -94,6 +93,10 @@ export default {
     },
     showhotsearch() {
       this.hotSearchVisible = true
+      //显示完成后回调函数调用 子组件的reset方法
+      this.$nextTick(() => {
+        this.$refs.hotSearch.reset()
+      })
     }
   },
   data() {
