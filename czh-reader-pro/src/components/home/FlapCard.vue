@@ -1,11 +1,14 @@
 <template>
   <div class="flap-card-wrapper" v-show="flapCardVisible">
-    <div class="flap-card-background">
+    <div class="flap-card-background" :class="{'animation': runFlapCardAnimation}">
       <div class="flap-card" v-for="(item, index) in flapCardList" :key="index" :style="{zIndex: item.zIndex}">
         <div class="flap-card-circle">
           <div class="flap-card-semi-circle flap-card-semi-circle-left" :style="semiCircleStyle(item, 'left')" ref="left"></div>
           <div class="flap-card-semi-circle flap-card-semi-circle-right" :style="semiCircleStyle(item, 'right')" ref="right"></div>
         </div>
+      </div>
+      <div class="point-wrapper" >
+        <div class="point" v-for="(item,index) in pointList" :key="index" :class="{'animation': runPointAnimation}"></div>
       </div>
     </div>
     <div class="close-btn-wrapper" @click="close">
@@ -136,6 +139,16 @@ export default {
     close() {
       this.setFlapCardVisible(false)
       this.StopAnimation()
+    },
+    startPonitAnimation() {
+      this.runPointAnimation = true
+    },
+    runAnimation() {
+      this.runFlapCardAnimation = true
+      setTimeout(() => {
+        this.startFlapCardAnimation()
+        this.startPonitAnimation()
+      }, 300)
     }
   },
   mixins: [homeMixin],
@@ -145,7 +158,16 @@ export default {
       flapCardList: FLAP_CARD_LIST,
       front: 0,
       back: 1,
-      IntervalTime: 10
+      IntervalTime: 10,
+      runFlapCardAnimation: false,
+      pointList: null,
+      runPointAnimation: false
+    }
+  },
+  created() {
+    this.pointList = []
+    for (let i = 0; i < 18; i++) {
+      this.pointList.push(`point${i}`)
     }
   },
   // mounted() {
@@ -155,7 +177,7 @@ export default {
   watch: {
     flapCardVisible(v) {
       if (v) {
-        this.startFlapCardAnimation()
+        this.runAnimation()
       }
     }
   }
@@ -164,6 +186,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/styles/global";
+@import "../../assets/styles/flapCard";
 
 .flap-card-wrapper {
   width: 100%;
@@ -175,32 +198,39 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   @include center;
 
-  .close-btn-wrapper {
-    position: absolute;
-    left: 0;
-    bottom: px2rem(45);
-    z-index: 1100;
-    width: 100%;
-    @include center;
-
-    .iconfont {
-      width: px2rem(45);
-      height: px2rem(45);
-      font-size: px2rem(25);
-      border-radius: 50%;
-      background: #333;
-      color: white;
-      @include center;
-
-    }
-  }
-
   .flap-card-background {
     position: relative;
     width: px2rem(64);
     height: px2rem(64);
     background: white;
     border-radius: px2rem(5);
+
+    // &.animation {
+    //   animation: flap-card-move .3s ease-in 1;
+    // }
+
+    // @keyframes flap-card-move {
+    //   0% {
+    //     transform: scale(0);
+    //     opacity: 0;
+    //   }
+
+    //   50% {
+    //     transform: scale(1.2);
+    //     opacity: 1;
+    //   }
+
+    //   75% {
+    //     transform: scale(0.9);
+    //     opacity: 1;
+    //   }
+
+    //   100% {
+    //     transform: scale(1);
+    //     opacity: 1;
+    //   }
+
+    // }
 
     .flap-card {
       @include absCenter;
@@ -234,6 +264,42 @@ export default {
           transform-origin: left;
         }
       }
+    }
+
+    .point-wrapper {
+        z-index: 1500;
+        @include absCenter;
+        .point {
+          border-radius: 50%;
+          @include absCenter;
+          &.animation {
+            @for $i from 1 to length($moves) {
+              &:nth-child(#{$i}) {
+                @include move($i);
+              }
+            }
+          }
+        }
+      }
+  }
+
+  .close-btn-wrapper {
+    position: absolute;
+    left: 0;
+    bottom: px2rem(45);
+    z-index: 1100;
+    width: 100%;
+    @include center;
+
+    .iconfont {
+      width: px2rem(45);
+      height: px2rem(45);
+      font-size: px2rem(25);
+      border-radius: 50%;
+      background: #333;
+      color: white;
+      @include center;
+
     }
   }
 }
