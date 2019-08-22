@@ -149,3 +149,46 @@ export const FLAP_CARD_LIST = [
     rotateDegree: 0
   }
 ]
+
+//传入一个ID 判断书籍类别
+export function getCategoryName(id) {
+  switch (id) {
+    case 1:
+      return 'Fantasy'
+    case 2:
+      return 'Military'
+    case 3:
+      return 'History'
+    case 4:
+      return 'Bizarre'
+    case 5:
+      return 'Wuxia'
+    case 6:
+      return 'Xianxia'
+    case 7:
+      return 'Campus'
+    case 8:
+      return 'Mystery'
+  }
+}
+//书籍类别文本国际化
+export function categoryText(category, vue) {
+  switch (category) {
+    case 1:
+      return vue.$t('category.fantasfy')
+    case 2:
+      return vue.$t('category.military')
+    case 3:
+      return vue.$t('category.history')
+    case 4:
+      return vue.$t('category.bizarre')
+    case 5:
+      return vue.$t('category.wuXia')
+    case 6:
+      return vue.$t('category.xianXia')
+    case 7:
+      return vue.$t('category.campus')
+    case 8:
+      return vue.$t('category.mystery')
+  }
+}

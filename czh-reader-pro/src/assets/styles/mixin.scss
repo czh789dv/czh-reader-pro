@@ -23,6 +23,13 @@ $animationType: linear;
   justify-content: flex-end;
   align-items: center;
 }
+@mixin columnTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 // 居左垂直排列
 @mixin columnLeft {
   display: flex;

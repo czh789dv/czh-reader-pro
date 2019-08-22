@@ -150,6 +150,8 @@ export const homeMixin = {
     ])
   },
   methods: {
-    ...mapActions(['setOffsetY', 'setHotSearchOffsetY', 'setFlapCardVisible'])
+    ...mapActions(['setOffsetY', 'setHotSearchOffsetY', 'setFlapCardVisible']),
+    //暂时先不写
+    showBookDetail(book) {}
   }
 }

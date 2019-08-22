@@ -1,7 +1,7 @@
 <template>
   <div class="store-home">
     <searchbar></searchbar>
-    <flap-card></flap-card>
+    <flap-card :data="random"></flap-card>
     <scroll :top="scorllTop" @onScroll="onScroll" ref="scroll">
       <div>1111111111111111111111111111111111</div>
       <div>1111111111111111111111111111111111</div>
@@ -37,9 +37,23 @@ import searchbar from '../../components/home/SearchBar'
 import FlapCard from '../../components/home/FlapCard'
 import scroll from '../../components/common/Scroll'
 import {
+  home
+} from '../../api/store'
+import {
   homeMixin
 } from '../../utils/mixin'
 export default {
+  mounted() {
+    //axios获取数据
+    home().then(response => {
+      if (response && response.status === 200) {
+        const data = response.data
+        //floor向下取整
+        const randomIndex = Math.floor(Math.random() * data.random.length)
+        this.random = data.random[randomIndex]
+      }
+    })
+  },
   mixins: [homeMixin],
   components: {
     searchbar,
@@ -48,7 +62,8 @@ export default {
   },
   data() {
     return {
-      scorllTop: 94
+      scorllTop: 94,
+      random: null
     }
   },
   methods: {

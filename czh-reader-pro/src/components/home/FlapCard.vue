@@ -1,5 +1,6 @@
 <template>
   <div class="flap-card-wrapper" v-show="flapCardVisible">
+    <!-- 弹出动画 -->
     <div class="flap-card-background" :class="{'animation': runFlapCardAnimation}">
       <div class="flap-card" v-for="(item, index) in flapCardList" :key="index" :style="{zIndex: item.zIndex}">
         <div class="flap-card-circle">
@@ -7,10 +8,27 @@
           <div class="flap-card-semi-circle flap-card-semi-circle-right" :style="semiCircleStyle(item, 'right')" ref="right"></div>
         </div>
       </div>
-      <div class="point-wrapper" >
+      <div class="point-wrapper">
         <div class="point" v-for="(item,index) in pointList" :key="index" :class="{'animation': runPointAnimation}"></div>
       </div>
     </div>
+    <!-- 随机推荐书籍 -->
+    <div class="book-card" :class="{'animation': runBookCardAnimation}">
+      <!-- 图书弹出框整体 -->
+      <div class="book-card-wrapper">
+        <!-- 图片 -->
+        <div class="img-wrapper"></div>
+        <!-- 文字信息 -->
+        <div class="content-wrapper">
+          <div class="content-title">12312</div>
+          <div class="content-author">aaaa</div>
+          <div class="content-category">asdas</div>
+        </div>
+        <!-- 按钮  点击跳转图书页 stop修饰符  -->
+        <div class="read-btn" @click.stop="showBookDetail(data)">{{$t('home.readNow')}}</div>
+      </div>
+    </div>
+    <!-- 关闭按钮 -->
     <div class="close-btn-wrapper" @click="close">
       <div class="iconfont icon-close"></div>
     </div>
@@ -45,9 +63,13 @@ export default {
       this.task = setInterval(() => {
         this.flapCardRotate()
       }, this.IntervalTime)
+      setTimeout(() => {
+        this.StopAnimation()
+      }, 2500)
     },
-    //解决定时器导致的STYLE错误
+    //关闭动画相关
     StopAnimation() {
+      this.runFlapCardAnimation = false
       if (this.task) {
         clearInterval(this.task)
       }
@@ -142,6 +164,9 @@ export default {
     },
     startPonitAnimation() {
       this.runPointAnimation = true
+      setTimeout(() => {
+        this.runPointAnimation = false
+      }, 1500)
     },
     runAnimation() {
       this.runFlapCardAnimation = true
@@ -161,8 +186,13 @@ export default {
       IntervalTime: 10,
       runFlapCardAnimation: false,
       pointList: null,
-      runPointAnimation: false
+      runPointAnimation: false,
+      runBookCardAnimation: false
     }
+  },
+  //接受父组件的数据
+  props: {
+    data: Object
   },
   created() {
     this.pointList = []
@@ -204,33 +234,37 @@ export default {
     height: px2rem(64);
     background: white;
     border-radius: px2rem(5);
+    //动画运行完成后 缩放为0 透明度为0
+    transform: scale(0);
+    opacity: 0;
 
-    // &.animation {
-    //   animation: flap-card-move .3s ease-in 1;
-    // }
+    &.animation {
+      //both 维持动画主体在100%
+      animation: flap-card-move .3s ease-in both;
+    }
 
-    // @keyframes flap-card-move {
-    //   0% {
-    //     transform: scale(0);
-    //     opacity: 0;
-    //   }
+    @keyframes flap-card-move {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
 
-    //   50% {
-    //     transform: scale(1.2);
-    //     opacity: 1;
-    //   }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
 
-    //   75% {
-    //     transform: scale(0.9);
-    //     opacity: 1;
-    //   }
+      75% {
+        transform: scale(0.9);
+        opacity: 1;
+      }
 
-    //   100% {
-    //     transform: scale(1);
-    //     opacity: 1;
-    //   }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
 
-    // }
+    }
 
     .flap-card {
       @include absCenter;
@@ -267,20 +301,95 @@ export default {
     }
 
     .point-wrapper {
-        z-index: 1500;
+      z-index: 1500;
+      @include absCenter;
+
+      .point {
+        border-radius: 50%;
         @include absCenter;
-        .point {
-          border-radius: 50%;
-          @include absCenter;
-          &.animation {
-            @for $i from 1 to length($moves) {
-              &:nth-child(#{$i}) {
-                @include move($i);
-              }
+
+        &.animation {
+          @for $i from 1 to length($moves) {
+            &:nth-child(#{$i}) {
+              @include move($i);
             }
           }
         }
       }
+    }
+  }
+
+  .book-card {
+    position: relative;
+    width: 65%;
+    border-radius: px2rem(15);
+    background: white;
+    max-width: px2rem(300);
+    box-sizing: border-box;
+    &.animation{
+      animation: scale .3s ease-in both;
+      @keyframes scale {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    }
+
+    .book-card-wrapper {
+      width: 100%;
+      height: 100%;
+      //从上而下垂直居中布局
+      @include columnTop;
+      .img-wrapper {
+        width: 100%;
+        height: 100%;
+        @include center;
+      }
+
+      .content-wrapper {
+
+        .content-title {
+          color: #333;
+          font-weight: blod;
+          line-height: px2rem(20);
+          font-size: px2rem(18);
+          text-align: center;
+          @include ellipsis1(2)
+        }
+
+        .content-author {
+          margin-top: px2rem(10);
+          text-align: center;
+        }
+
+        .content-category {
+          color:#999;
+          font-size: px2rem(14);
+          margin-top: px2rem(10);
+          text-align: center;
+
+        }
+      }
+
+      .read-btn {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        z-index: 1500;
+        width: 100%;
+        border-radius: px2rem(10);
+        text-align: center;
+        color: white;
+        font-size: px2rem(14);
+        background: rgb(61, 155, 250);
+      }
+
+    }
   }
 
   .close-btn-wrapper {
