@@ -17,8 +17,8 @@
         </div>
       </transition>
       <!-- 返回按钮 绝对布局 -->
-      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}">
-        <span class="iconfont icon-back" @click="hidehotsearch"></span>
+      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}" @click="hidehotsearch">
+        <span class="iconfont icon-back" ></span>
       </div>
       <!-- 搜索框 -->
       <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">

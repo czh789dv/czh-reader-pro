@@ -1,32 +1,20 @@
 <template>
   <div class="store-home">
+    <!-- 搜索栏 -->
     <searchbar></searchbar>
+    <!-- 弹出卡片动画 -->
     <flap-card :data="random"></flap-card>
+    <!-- 首页滚动 -->
     <scroll :top="scorllTop" @onScroll="onScroll" ref="scroll">
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
-      <div>1111111111111111111111111111111111</div>
+      <div class="banner-wrapper">
+        <img :src="banner" class="banner-img">
+      </div>
+      <!-- 猜你喜欢组件 随机生成9个 每次出现3 点换一批出现下3个 -->
+      <guess-you-like :data="guessYouLike"></guess-you-like>
+      <!-- 热门推荐组件  -->
+      <!-- 精选组件 -->
+      <!-- 分类组件 循环所有分类 并展示前三 -->
+      <div class="category-list-wrapper"></div>
     </scroll>
 
   </div>
@@ -35,6 +23,7 @@
 <script>
 import searchbar from '../../components/home/SearchBar'
 import FlapCard from '../../components/home/FlapCard'
+import GuessYouLike from '../../components/home/GuessYouLike'
 import scroll from '../../components/common/Scroll'
 import {
   home
@@ -48,9 +37,12 @@ export default {
     home().then(response => {
       if (response && response.status === 200) {
         const data = response.data
+        console.log(data)
         //floor向下取整
         const randomIndex = Math.floor(Math.random() * data.random.length)
         this.random = data.random[randomIndex]
+        this.banner = data.banner
+        this.guessYouLike = data.guessYouLike
       }
     })
   },
@@ -58,12 +50,15 @@ export default {
   components: {
     searchbar,
     scroll,
-    FlapCard
+    FlapCard,
+    GuessYouLike
   },
   data() {
     return {
       scorllTop: 94,
-      random: null
+      random: null,
+      banner: null,
+      guessYouLike: null
     }
   },
   methods: {
@@ -87,5 +82,16 @@ export default {
 .store-home {
   width: 100%;
   height: 100%;
+
+  .banner-wrapper {
+    width: 100%;
+    padding: px2rem(10);
+    box-sizing: border-box;
+    .banner-img{
+      width: 100%;
+      height: px2rem(120);
+    }
+  }
+
 }
 </style>
