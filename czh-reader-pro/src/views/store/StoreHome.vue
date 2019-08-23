@@ -36,13 +36,15 @@ export default {
     //axios获取数据
     home().then(response => {
       if (response && response.status === 200) {
-        const data = response.data
-        console.log(data)
+        this.lists = response.data
+        // const data = response.data
+        console.log(this.lists)
         //floor向下取整
-        const randomIndex = Math.floor(Math.random() * data.random.length)
-        this.random = data.random[randomIndex]
-        this.banner = data.banner
-        this.guessYouLike = data.guessYouLike
+        const randomIndex = Math.floor(Math.random() * this.lists.random.length)
+        this.random = this.lists.random[randomIndex]
+        this.banner = this.lists.banner
+        this.guessYouLike = this.lists.guessYouLike
+        console.log(this.guessYouLike)
       }
     })
   },
@@ -55,6 +57,7 @@ export default {
   },
   data() {
     return {
+      lists: null,
       scorllTop: 94,
       random: null,
       banner: null,
@@ -87,7 +90,8 @@ export default {
     width: 100%;
     padding: px2rem(10);
     box-sizing: border-box;
-    .banner-img{
+
+    .banner-img {
       width: 100%;
       height: px2rem(120);
     }
