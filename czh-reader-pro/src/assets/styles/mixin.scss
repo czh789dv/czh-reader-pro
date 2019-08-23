@@ -11,6 +11,12 @@ $animationType: linear;
   justify-content: center;
   align-items: center;
 }
+@mixin top {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  
+}
 
 @mixin left {
   display: flex;
@@ -29,7 +35,13 @@ $animationType: linear;
   justify-content: flex-start;
   align-items: center;
 }
-
+//居中垂直排列
+@mixin columCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 // 居左垂直排列
 @mixin columnLeft {
   display: flex;

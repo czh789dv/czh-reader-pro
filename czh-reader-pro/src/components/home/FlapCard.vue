@@ -226,9 +226,9 @@ export default {
       this.pointList.push(`point${i}`)
     }
   },
-  mounted() {
-    console.log(this.data)
-  },
+  // mounted() {
+  //   console.log(this.data)
+  // },
   //使用监听器启动
   watch: {
     flapCardVisible(v) {

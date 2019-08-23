@@ -7,11 +7,12 @@
     <!-- 首页滚动 -->
     <scroll :top="scorllTop" @onScroll="onScroll" ref="scroll">
       <div class="banner-wrapper">
-        <img :src="banner" class="banner-img">
+        <div class="banner-img" :style="{backgroundImage:`url('${Bbanner}')`}"></div>
       </div>
       <!-- 猜你喜欢组件 随机生成9个 每次出现3 点换一批出现下3个 -->
       <guess-you-like :data="guessYouLike"></guess-you-like>
       <!-- 热门推荐组件  -->
+      <Recommend :data="recommend"></Recommend>
       <!-- 精选组件 -->
       <!-- 分类组件 循环所有分类 并展示前三 -->
       <div class="category-list-wrapper"></div>
@@ -24,6 +25,7 @@
 import searchbar from '../../components/home/SearchBar'
 import FlapCard from '../../components/home/FlapCard'
 import GuessYouLike from '../../components/home/GuessYouLike'
+import Recommend from '../../components/home/Recommend'
 import scroll from '../../components/common/Scroll'
 import {
   home
@@ -44,7 +46,9 @@ export default {
         this.random = this.lists.random[randomIndex]
         this.banner = this.lists.banner
         this.guessYouLike = this.lists.guessYouLike
-        console.log(this.guessYouLike)
+        // console.log(this.guessYouLike)
+        this.recommend = this.lists.recommend
+        this.featured = this.lists.featured
       }
     })
   },
@@ -53,7 +57,8 @@ export default {
     searchbar,
     scroll,
     FlapCard,
-    GuessYouLike
+    GuessYouLike,
+    Recommend
   },
   data() {
     return {
@@ -61,7 +66,9 @@ export default {
       scorllTop: 94,
       random: null,
       banner: null,
-      guessYouLike: null
+      guessYouLike: null,
+      Bbanner: 'http://i0.hdslb.com/bfs/archive/3329c9f0abfb925ae30441f24d924ad3c19775df.png',
+      recommend: null
     }
   },
   methods: {
@@ -93,7 +100,9 @@ export default {
 
     .banner-img {
       width: 100%;
-      height: px2rem(120);
+      height: px2rem(160);
+      background-repeat: no-repeat;
+      background-position-x: 40%;
     }
   }
 

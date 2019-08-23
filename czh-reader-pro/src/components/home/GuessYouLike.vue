@@ -1,6 +1,7 @@
 <template>
   <div class="guess-you-like">
     <!-- 预留标题组件 -->
+    <title1 :label="$t('home.guessYouLike')" :btn="$t('home.change')" @click="change()"></title1>
     <div class="guess-you-like-list">
       <div class="guess-you-like-item" v-for="(item, index) in showData" :key="index">
         <div class="img-wrapper">
@@ -18,15 +19,22 @@
 </template>
 
 <script>
+import Title1 from './Title'
 export default {
-  mounted() {
-    console.log(this.data)
-  },
   props: {
     data: Array
   },
   methods: {
-    resultText(item) {}
+    resultText(item) {},
+    change() {
+      console.log('11')
+      // if (this.index + 1 >= this.total) {
+      //   this.index = 0
+      // } else {
+      //   this.index++
+      // }
+    }
+
   },
   watch: {
     data(v) {
@@ -47,7 +55,9 @@ export default {
       }
     }
   },
-  components: {},
+  components: {
+    Title1
+  },
   data() {
     return {
       index: 0,
@@ -84,14 +94,15 @@ export default {
         flex: 1;
         padding: px2rem(10) 0;
         font-size: px2rem(14);
+
         .title {}
 
         .author {
-          margin-top:px2rem(10);
+          margin-top: px2rem(10);
         }
 
         .result {
-          margin-top:px2rem(10);
+          margin-top: px2rem(10);
         }
       }
     }
