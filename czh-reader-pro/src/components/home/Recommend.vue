@@ -38,7 +38,7 @@ export default {
 
 .recommend {
   width: 100%;
-  height: 100%;
+  height: 50%;
 
   .recommend-list {
     width: 100%;

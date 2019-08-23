@@ -14,6 +14,7 @@
       <!-- 热门推荐组件  -->
       <Recommend :data="recommend"></Recommend>
       <!-- 精选组件 -->
+      <Featured :data="featured"></Featured>
       <!-- 分类组件 循环所有分类 并展示前三 -->
       <div class="category-list-wrapper"></div>
     </scroll>
@@ -26,6 +27,7 @@ import searchbar from '../../components/home/SearchBar'
 import FlapCard from '../../components/home/FlapCard'
 import GuessYouLike from '../../components/home/GuessYouLike'
 import Recommend from '../../components/home/Recommend'
+import Featured from '../../components/home/Featured'
 import scroll from '../../components/common/Scroll'
 import {
   home
@@ -58,7 +60,8 @@ export default {
     scroll,
     FlapCard,
     GuessYouLike,
-    Recommend
+    Recommend,
+    Featured
   },
   data() {
     return {
