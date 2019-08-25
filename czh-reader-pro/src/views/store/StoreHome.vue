@@ -16,7 +16,12 @@
       <!-- 精选组件 -->
       <Featured :data="featured"></Featured>
       <!-- 分类组件 循环所有分类 并展示前三 -->
-      <div class="category-list-wrapper"></div>
+      <div class="category-list-wrapper" v-for="(item,index) in categoryList " :key="index">
+        <category-book :data="item"></category-book>
+      </div>
+      <!-- 所有分类 -->
+      <category :data="categories"></category>
+
     </scroll>
 
   </div>
@@ -28,6 +33,8 @@ import FlapCard from '../../components/home/FlapCard'
 import GuessYouLike from '../../components/home/GuessYouLike'
 import Recommend from '../../components/home/Recommend'
 import Featured from '../../components/home/Featured'
+import Category from '../../components/home/Category'
+import CategoryBook from '../../components/home/CategoryBook'
 import scroll from '../../components/common/Scroll'
 import {
   home
@@ -51,6 +58,8 @@ export default {
         // console.log(this.guessYouLike)
         this.recommend = this.lists.recommend
         this.featured = this.lists.featured
+        this.categories = this.lists.categories
+        this.categoryList = this.lists.categoryList
       }
     })
   },
@@ -61,7 +70,9 @@ export default {
     FlapCard,
     GuessYouLike,
     Recommend,
-    Featured
+    Featured,
+    CategoryBook,
+    Category
   },
   data() {
     return {
@@ -71,7 +82,9 @@ export default {
       banner: null,
       guessYouLike: null,
       Bbanner: 'https://i0.hdslb.com/bfs/sycp/creative_img/201908/9204e0c6624a63699364e20677a6ebcd.jpg@880w_440h.jpg',
-      recommend: null
+      recommend: null,
+      categories: null,
+      categoryList: null
     }
   },
   methods: {
@@ -105,7 +118,7 @@ export default {
       width: 100%;
       height: px2rem(160);
       background-repeat: no-repeat;
-      background-size:px2rem(580) px2rem(280) ;
+      background-size: px2rem(580) px2rem(280);
       background-position-x: 0%;
     }
   }
