@@ -4,7 +4,8 @@
     <div class="recommend-list">
       <div class="recommend-item" v-for="(item, index) in data" :key="index">
         <div class="img-wrapper">
-          <div class="img" :style="{backgroundImage:`url('${Btu}')`}"></div>
+          <!-- <div class="img" :style="{backgroundImage:`url('${Btu}')`}"></div> -->
+          <img :src="item.cover" alt="" class="img">
         </div>
         <div class="content-wrapper">
           <div class="title">{{item.title}}</div>

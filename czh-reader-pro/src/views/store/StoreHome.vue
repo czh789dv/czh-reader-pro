@@ -70,7 +70,7 @@ export default {
       random: null,
       banner: null,
       guessYouLike: null,
-      Bbanner: 'http://i0.hdslb.com/bfs/archive/3329c9f0abfb925ae30441f24d924ad3c19775df.png',
+      Bbanner: 'https://i0.hdslb.com/bfs/sycp/creative_img/201908/9204e0c6624a63699364e20677a6ebcd.jpg@880w_440h.jpg',
       recommend: null
     }
   },
@@ -105,7 +105,8 @@ export default {
       width: 100%;
       height: px2rem(160);
       background-repeat: no-repeat;
-      background-position-x: 40%;
+      background-size:px2rem(580) px2rem(280) ;
+      background-position-x: 0%;
     }
   }
 
