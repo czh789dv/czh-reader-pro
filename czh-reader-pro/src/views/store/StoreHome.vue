@@ -84,7 +84,8 @@ export default {
       Bbanner: 'https://i0.hdslb.com/bfs/sycp/creative_img/201908/9204e0c6624a63699364e20677a6ebcd.jpg@880w_440h.jpg',
       recommend: null,
       categories: null,
-      categoryList: null
+      categoryList: null,
+      featured: null
     }
   },
   methods: {
