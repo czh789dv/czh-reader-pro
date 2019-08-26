@@ -151,7 +151,16 @@ export const homeMixin = {
   },
   methods: {
     ...mapActions(['setOffsetY', 'setHotSearchOffsetY', 'setFlapCardVisible']),
-    //暂时先不写
-    showBookDetail(book) {}
+    // 通关路由转跳
+    showBookDetail(vue, book) {
+      console.log('showBookDetail')
+      vue.$router.push({
+        path: '/store/detail',
+        query: {
+          fileName: book.fileName,
+          category: book.categoryText
+        }
+      })
+    }
   }
 }

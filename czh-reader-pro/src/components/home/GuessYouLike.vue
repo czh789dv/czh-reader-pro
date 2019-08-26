@@ -3,7 +3,7 @@
     <!-- 预留标题组件 -->
     <title1 :label="$t('home.guessYouLike')" :btn="$t('home.change')" @click="change()"></title1>
     <div class="guess-you-like-list">
-      <div class="guess-you-like-item" v-for="(item, index) in showData" :key="index">
+      <div class="guess-you-like-item" v-for="(item, index) in showData" :key="index" @click="showBookDetail(item)">
         <div class="img-wrapper">
           <img :src="item.cover" class="img">
         </div>
@@ -20,7 +20,11 @@
 
 <script>
 import Title1 from './Title'
+import {
+  homeMixin
+} from '../../utils/mixin'
 export default {
+  mixins: [homeMixin],
   props: {
     data: Array
   },
