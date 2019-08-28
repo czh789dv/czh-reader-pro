@@ -35,10 +35,11 @@ export default {
 .cover-title-wrapper {
   display: flex;
   width: 100%;
-  padding: px2rem(5);
+  padding: px2rem(10) 0;
   border-bottom: px2rem(1) solid #eee;
   box-sizing: border-box;
   .cover-title-left-wrapper {
+    padding: px2rem(10) 0 px2rem(10) px2rem(15);
     flex: 0 0 px2rem(100);
     @include top;
     .cover-img {
@@ -54,14 +55,19 @@ export default {
     .detail-cover-title-wrapper {
       .cover-title-text {
         font-size: px2rem(20);
+        line-height: px2rem(24);
+        color: #333;
       }
     }
   }
 
   .cover-author-wrapper {
     margin-top: px2rem(10);
+    height: px2rem(15);
     .cover-author-text {
       font-size: px2rem(14);
+      line-height: px2rem(16);
+      color: $color-blue;
     }
   }
 

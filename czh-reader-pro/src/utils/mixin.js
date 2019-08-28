@@ -152,9 +152,9 @@ export const homeMixin = {
   methods: {
     ...mapActions(['setOffsetY', 'setHotSearchOffsetY', 'setFlapCardVisible']),
     // 通关路由转跳
-    showBookDetail(vue, book) {
+    showBookDetail(book) {
       console.log('showBookDetail')
-      vue.$router.push({
+      this.$router.push({
         path: '/store/detail',
         query: {
           fileName: book.fileName,
