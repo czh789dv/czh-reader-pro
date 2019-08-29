@@ -70,7 +70,9 @@ export default {
     margin-left: px2rem(15);
     @include left;
 
-    .icon-back {}
+    .icon-back {
+      font-size: px2rem(20);
+    }
   }
 
   .title-right-wrapper {
@@ -80,9 +82,14 @@ export default {
     margin-right: px2rem(15);
     @include right;
 
-    .icon-shelf {}
+    .icon-shelf {
+      font-size: px2rem(20);
+      margin-right: px2rem(10);
+    }
 
-    .icon-share {}
+    .icon-share {
+      font-size: px2rem(20);
+    }
   }
 
   .title-text {
@@ -91,6 +98,8 @@ export default {
     top: 0;
     height: px2rem(42);
     font-size: px2rem(14);
+    line-height: px2rem(16);
+    margin-right: px2rem(10);
   }
 }
 </style>
