@@ -79,8 +79,8 @@ export const ebookMixin = {
         case 'Eye':
           addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_eye.css`)
           break
-        case 'Glod':
-          addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_glod.css`)
+        case 'Gold':
+          addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_gold.css`)
           break
         case 'Night':
           addCss(`${process.env.VUE_APP_RES_URL}/theme/theme_night.css`)
