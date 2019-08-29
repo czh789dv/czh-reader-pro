@@ -5,7 +5,7 @@
       <span class="btn">{{btn}}</span>
     </div>
     <div class="hot-search-list">
-      <div class="hot-search-item" v-for="(item,index) in hotSearch" :key="index">
+      <div class="hot-search-item" v-for="(item,index) in hotSearch" :key="index" >
         <div class="icon-wrapper">
           <span class="iconfont icon-book" v-if="item.type === 1"></span>
           <span class="iconfont icon-search" v-if="item.type === 2"></span>

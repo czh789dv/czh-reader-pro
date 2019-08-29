@@ -29,14 +29,25 @@ export default {
     data: Array
   },
   methods: {
-    resultText(item) {},
+    resultText(item) {
+      if (item) {
+        switch (item.type) {
+          case 1:
+            return this.$t('home.sameAuthor').replace('$1', item.result)
+          case 2:
+            return this.$t('home.sameReader').replace('$1', item.result)
+          case 3:
+            return this.$t('home.readPercent').replace('$1', item.percent).replace('$2', item.result)
+        }
+      }
+    },
     change() {
       console.log('11')
-      // if (this.index + 1 >= this.total) {
-      //   this.index = 0
-      // } else {
-      //   this.index++
-      // }
+      if (this.index + 1 >= this.total) {
+        this.index = 0
+      } else {
+        this.index++
+      }
     }
 
   },
@@ -97,16 +108,19 @@ export default {
       .content-wrapper {
         flex: 1;
         padding: px2rem(10) 0;
-        font-size: px2rem(14);
 
         .title {}
 
         .author {
           margin-top: px2rem(10);
+          font-size: px2rem(12);
+          @include left;
         }
 
         .result {
           margin-top: px2rem(10);
+          font-size: px2rem(12);
+          @include left;
         }
       }
     }

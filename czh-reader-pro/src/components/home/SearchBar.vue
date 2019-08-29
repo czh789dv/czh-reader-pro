@@ -17,16 +17,16 @@
         </div>
       </transition>
       <!-- 返回按钮 绝对布局 -->
-      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}" @click="hidehotsearch">
-        <span class="iconfont icon-back" ></span>
+      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}" @click="hideHotSearch">
+        <span class="iconfont icon-back"></span>
       </div>
       <!-- 搜索框 -->
       <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">
         <div class="search-bar-blank" :class="{'hide-title': !titleVisible}"></div>
         <div class="search-bar-input">
-          <span class="iconfont icon-search"></span>
-          <input type="text" class="input" :placeholder="$t('home.hint')" v-model="searchText" @click="showhotsearch"></div>
-
+          <span class="icon-search iconfont"></span>
+          <input class="input" type="text" :placeholder="$t('home.hint')" v-model="searchText" @click="showHotSearch" @keyup.13.exact="search">
+        </div>
       </div>
     </div>
     <!-- 热搜列表 -->
@@ -50,11 +50,11 @@ export default {
     offsetY(offsetY) {
       // console.log(offsetY)
       if (offsetY > 0) {
-        this.hidetitle()
-        this.showshadow()
+        this.hideTitle()
+        this.showShadow()
       } else {
-        this.showtitle()
-        this.hideshadow()
+        this.showTitle()
+        this.hideShadow()
       }
     },
     HotSearchOffsetY(offsetY) {
@@ -66,44 +66,65 @@ export default {
     }
   },
   methods: {
+    search() {
+      this.$router.push({
+        path: '/store/list',
+        query: {
+          keyword: this.searchText
+        }
+      })
+    },
     showFlapCard() {
       this.setFlapCardVisible(true)
     },
-    // 显示影藏dom
-    hidetitle() {
+    back() {
       if (this.offsetY > 0) {
-        this.showshadow()
+        this.showShadow()
       } else {
-        this.hideshadow()
+        this.hideShadow()
       }
-      this.titleVisible = false
+      if (this.hotSearchVisible) {
+        this.hideHotSearch()
+      } else {
+        this.$router.push('/store/shelf')
+      }
     },
-    showtitle() {
-      this.titleVisible = true
-      this.hideshadow()
-    },
-    hideshadow() {
-      this.shadowVisible = false
-    },
-    showshadow() {
-      this.shadowVisible = true
-    },
-    hidehotsearch() {
-      this.hotSearchVisible = false
-    },
-    showhotsearch() {
+    showHotSearch() {
+      this.hideTitle()
+      this.hideShadow()
       this.hotSearchVisible = true
-      //显示完成后回调函数调用 子组件的reset方法
       this.$nextTick(() => {
         this.$refs.hotSearch.reset()
       })
+    },
+    hideHotSearch() {
+      this.hotSearchVisible = false
+      if (this.offsetY > 0) {
+        this.hideTitle()
+        this.showShadow()
+      } else {
+        this.showTitle()
+        this.hideShadow()
+      }
+    },
+    hideTitle() {
+      this.titleVisible = false
+    },
+    showTitle() {
+      this.titleVisible = true
+    },
+    hideShadow() {
+      this.shadowVisible = false
+    },
+    showShadow() {
+      this.shadowVisible = true
     }
   },
   data() {
     return {
       searchText: '',
       titleVisible: true,
-      shadowVisible: true,
+      shadowVisible: false,
       hotSearchVisible: false
     }
   }

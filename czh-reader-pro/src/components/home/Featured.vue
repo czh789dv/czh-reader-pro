@@ -1,9 +1,9 @@
 <template>
   <div class="featured">
-    <title1 :label="$t('home.featured')" :btn="$t('home.change')"></title1>
+    <title1 :label="titleText" :btn="btnText"></title1>
     <div class="featured-list">
       <div class="featured-item-wrapper">
-        <div class="featured-item" v-for="(item,index) in data" :key="index">
+        <div class="featured-item" v-for="(item,index) in data" :key="index" @click="showBookDetail(item)">
           <div class="img-warpper">
             <img :src="item.cover" alt="" class="img">
           </div>
@@ -20,11 +20,15 @@
 </template>
 
 <script>
+import {
+  homeMixin
+} from '../../utils/mixin'
 import Title1 from './Title'
 import {
   categoryText
 } from '../../utils/store'
 export default {
+  mixins: [homeMixin],
   methods: {
     //返回类别
     categoryText(category) {
@@ -33,16 +37,16 @@ export default {
   },
   props: {
     data: Array,
-      titleVisible: {
-        type: Boolean,
-        default: true
-      },
-      titleText: {
-        type: String
-      },
-      btnText: {
-        type: String
-      }
+    titleVisible: {
+      type: Boolean,
+      default: true
+    },
+    titleText: {
+      type: String
+    },
+    btnText: {
+      type: String
+    }
   },
   components: {
     Title1
@@ -89,24 +93,24 @@ export default {
 
         .content-wrapper {
           flex: 1;
-          width: px2rem(90);
+          width: px2rem(100);
           padding: 0 px2rem(5);
           font-size: px2rem(14);
 
           .title {
             margin-top: px2rem(5);
-            @include ellipsis1(1);
+            @include ellipsis1(2);
           }
 
           .author {
-            margin-top: px2rem(15);
+            margin-top: px2rem(10);
             font-size: px2rem(12);
-            @include ellipsis1(2);
+            @include ellipsis1(1);
           }
 
           .category {
             margin-top: px2rem(5);
-            @include center;
+            @include left;
           }
         }
       }

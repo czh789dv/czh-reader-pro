@@ -2,9 +2,10 @@
 // 通过给精选组件传值和循环 来展示
 <template>
   <div class="book-list-wrapper">
-    <detail-title :title="title" @back="back"></detail-title>
+    <detail-title :title="title" @back="back" ref="title"></detail-title>
     <scroll :top="42" @onScroll="onScroll">
       <!-- 通过循环list 获取data的数据  -->
+      <!-- 这里传递给精选组件分类名称 和空的按钮文字 -->
       <featured :data="value" :titleText="titleText ? titleText : getCategoryText(key)" :btnText="''" v-for="(value, key, index) in list" :key="index"></featured>
     </scroll>
 
@@ -45,6 +46,7 @@ export default {
   created() {
     this.getlist()
     this.titleText = this.$route.query.categoryText
+    console.log(this.titleText)
   },
   methods: {
     getCategoryText(key) {

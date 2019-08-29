@@ -3,9 +3,9 @@
 每行2个类别  每个类别 有2张里面图书的图片重叠显示
 文字显示 类别名称 和 书籍数量  -->
   <div class="category">
-    <title1 :label="$t('home.category')" :btn="$t('home.seeAll')"></title1>
+    <title1 :label="$t('home.category')" :btn="$t('home.seeAll')" @click="showBookList()"></title1>
     <div class="category-list">
-      <div class="category-item-wrapper" v-for="(item,index) in data" :key="index">
+      <div class="category-item-wrapper" v-for="(item,index) in data" :key="index" @click="showBookCategory(item)">
         <div class="category-item">
           <div class="content-wrapprt">
             <div class="title">{{categoryText(item.category)}}</div>
@@ -26,13 +26,26 @@
 
 <script>
 import {
-  categoryText
+  categoryText,
+  getCategoryName
 } from '../../utils/store'
 import title1 from './Title'
 export default {
   methods: {
+    showBookCategory(item) {
+      this.$router.push({
+        path: '/store/list',
+        query: {
+          category: getCategoryName(item.category),
+          categoryText: this.categoryText(item.category)
+        }
+      })
+    },
     categoryText(category) {
       return categoryText(category, this)
+    },
+    showBookList() {
+      this.$router.push('/store/list')
     }
   },
   props: {

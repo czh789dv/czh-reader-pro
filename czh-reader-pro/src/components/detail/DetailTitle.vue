@@ -5,7 +5,7 @@
       <span class="iconfont icon-back"></span>
     </div>
     <div class="title-right-wrapper">
-      <span class="iconfont icon-shelf" @click="showBookShelf"></span>
+      <span class="iconfont icon-shelf"  v-if="showShelf" @click="showBookShelf"></span>
       <span class="iconfont icon-share"></span>
     </div>
     <div class="title-text">

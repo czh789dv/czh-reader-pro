@@ -14,7 +14,7 @@
       <!-- 热门推荐组件  -->
       <Recommend :data="recommend"></Recommend>
       <!-- 精选组件 -->
-      <Featured :data="featured"></Featured>
+      <Featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.change')"></Featured>
       <!-- 分类组件 循环所有分类 并展示前三 -->
       <div class="category-list-wrapper" v-for="(item,index) in categoryList " :key="index">
         <category-book :data="item"></category-book>

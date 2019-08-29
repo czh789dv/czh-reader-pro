@@ -276,22 +276,23 @@ export default {
     .book-detail-content-wrapper {
       width: 100%;
       border-bottom: px2rem(1) solid #eee;
+      box-sizing: border-box;
 
       .preview {}
 
       .book-detail-content-title {
-        padding: px2rem(15);
+        padding:  px2rem(20) px2rem(15) px2rem(10) px2rem(15);
         font-size: px2rem(20);
         font-weight: bold;
       }
 
       .book-detail-content-list-wrapper {
-        padding: px2rem(10);
+        padding: px2rem(10) px2rem(15) ;
 
         .book-detail-content-row {
           display: flex;
           box-sizing: border-box;
-          margin-top: px2rem(10);
+          margin-bottom: px2rem(10);
 
           .book-detail-content-label {
             flex: 0 0 px2rem(70);
@@ -317,9 +318,12 @@ export default {
 
         .book-detail-content-item-wrapper {
           .book-detail-content-item {
-            padding: px2rem(15);
+            padding: px2rem(15) 0;
             font-size: px2rem(14);
             border-bottom: px2rem(1) solid #eee;
+            &:last-child{
+              border-bottom: none;
+            }
 
             .book-detail-content-navigation-text {
               width: 100%;

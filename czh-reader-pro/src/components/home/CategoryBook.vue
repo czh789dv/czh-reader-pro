@@ -3,7 +3,7 @@
   <div class="category-book">
     <title1 :label="categoryText(data.category)" :btn="$t('home.seeAll')" @click="showBookCategory"></title1>
     <div class="category-book-list">
-      <div class="category-book-item" v-for="(item, index) in data.list" :key="index">
+      <div class="category-book-item" v-for="(item, index) in data.list" :key="index" @click="showBookDetail(item)">
         <div class="img-wrapper">
           <img :src="item.cover" class="img">
 
@@ -19,11 +19,15 @@
 
 <script>
 import {
+  homeMixin
+} from '../../utils/mixin'
+import {
   categoryText,
   getCategoryName
 } from '../../utils/store'
 import title1 from './Title'
 export default {
+  mixins: [homeMixin],
   methods: {
     showBookCategory() {
       this.$router.push({
