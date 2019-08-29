@@ -32,7 +32,17 @@ export default {
     }
   },
   props: {
-    data: Array
+    data: Array,
+      titleVisible: {
+        type: Boolean,
+        default: true
+      },
+      titleText: {
+        type: String
+      },
+      btnText: {
+        type: String
+      }
   },
   components: {
     Title1

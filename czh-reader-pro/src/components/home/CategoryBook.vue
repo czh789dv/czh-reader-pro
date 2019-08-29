@@ -1,7 +1,7 @@
 <template>
   <!-- 根据分类 显示分类里的所有书籍 -->
   <div class="category-book">
-    <title1 :label="categoryText(data.category)" :btn="$t('home.seeAll')"></title1>
+    <title1 :label="categoryText(data.category)" :btn="$t('home.seeAll')" @click="showBookCategory"></title1>
     <div class="category-book-list">
       <div class="category-book-item" v-for="(item, index) in data.list" :key="index">
         <div class="img-wrapper">
@@ -19,11 +19,21 @@
 
 <script>
 import {
-  categoryText
+  categoryText,
+  getCategoryName
 } from '../../utils/store'
 import title1 from './Title'
 export default {
   methods: {
+    showBookCategory() {
+      this.$router.push({
+        path: '/store/list',
+        query: {
+          category: getCategoryName(this.data.category),
+          categoryText: this.categoryText(this.data.category)
+        }
+      })
+    },
     categoryText(category) {
       return categoryText(category, this)
     }
@@ -62,6 +72,7 @@ export default {
 
       .img-wrapper {
         @include center;
+
         .img {
           width: 100%;
         }
@@ -69,6 +80,7 @@ export default {
 
       .content-wrapper {
         font-size: px2rem(12);
+
         .title {
           font-size: px2rem(14);
           margin-top: px2rem(5);

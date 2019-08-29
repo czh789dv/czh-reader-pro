@@ -36,9 +36,9 @@
             <span class="loading-text">{{$t('detail.loading')}}</span>
           </div>
           <div class="book-detail-content-item-wrapper">
-            <!-- 循环遍历目录 -->
             <div class="book-detail-content-item" v-for="(item, index) in flatNavigation" :key="index" @click="read(item)">
-              <div class="book-detail-content-navigation-text"></div>
+              <div class="book-detail-content-navigation-text" :class="{'is-sub': item.deep> 1}" :style="itemStyle(item)" v-if="item.label">{{item.label}}
+              </div>
             </div>
           </div>
         </div>
@@ -51,12 +51,12 @@
             <span class="loading-text">{{$t('detail.loading')}}</span>
           </div>
         </div>
-        <div class="preview" ref="preview" v-show="this.displayed"></div>
+        <div id="preview" v-show="this.displayed" ref="preview"></div>
       </div>
     </scroll>
     <!-- 最下面一行按钮 绝对定位 -->
     <div class="buttom-wrapper">
-      <div class="bottom-btn">{{$t('detail.read')}}</div>
+      <div class="bottom-btn" @click.stop.prevent="readBook()">{{$t('detail.read')}}</div>
       <div class="bottom-btn">{{$t('detail.listen')}}</div>
       <div class="bottom-btn">{{$t('detail.addOrRemoveShelf')}}</div>
     </div>
@@ -74,7 +74,8 @@ import {
   detail
 } from '../../api/store'
 import {
-  realPx
+  realPx,
+  px2rem
 } from '../../utils/utils'
 global.ePub = Epub
 
@@ -113,16 +114,34 @@ export default {
     }
   },
   methods: {
+    readBook() {
+      this.$router.push({
+        path: `/ebook/${this.categoryText}|${this.fileName}`
+      })
+    },
+
+    read(item) {
+      this.$router.push({
+        path: `/ebook/${this.categoryText}|${this.fileName}`
+      })
+    },
+    // 目录根据章节缩进
+    itemStyle(item) {
+      return {
+        magrinLeft: (item.deep - 1) * px2rem(20) + 'rem'
+      }
+    },
     //递归 将所有数据取出来 重组
     doFlatNavigation(content, deep = 1) {
       const arr = []
       content.forEach(item => {
         item.deep = deep
         arr.push(item)
-        if (item.subitems) {
-          arr.push(this.doFlatNavigation(item.subitems), deep + 1)
+        if (item.subitems && item.subitems.length > 0) {
+          arr.push(this.doFlatNavigation(item.subitems, deep + 1))
         }
       })
+      return arr
     },
     init() {
       // 通过路由获取名字和类别
@@ -152,17 +171,16 @@ export default {
       }
     },
     //渲染电子书
-    display(loacation) {
+    display(location) {
       if (this.$refs.preview) {
         if (!this.rendition) {
           this.rendition = this.book.renderTo('preview', {
             width: window.innerWidth > 640 ? 640 : window.innerWidth,
             height: window.innerHeight,
-            // 兼容微信
-            methods: 'default'
+            method: 'default'
           })
         }
-        if (!loacation) {
+        if (!location) {
           return this.rendition.display()
         } else {
           return this.rendition.display(location)
@@ -317,24 +335,29 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 150;
+    z-index: 10000;
     display: flex;
     width: 100%;
     height: px2rem(52);
     box-shadow: 0 px2rem(-2) px2rem(2) rgba(0, 0, 0, .15);
+    background: rgb(255, 255, 255);
+
     .bottom-btn {
       flex: 1;
-      color:$color-blue;
+      color: $color-blue;
       font-size: px2rem(14);
       @include center;
-      &:active{
+
+      &:active {
         color: $color-blue-transparent;
       }
-      .icon-check{
+
+      .icon-check {
         margin-right: px2rem(5);
       }
     }
-    &.hide-shadow{
+
+    &.hide-shadow {
       box-shadow: none;
     }
   }

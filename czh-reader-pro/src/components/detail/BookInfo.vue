@@ -63,7 +63,6 @@ export default {
 
   .cover-author-wrapper {
     margin-top: px2rem(10);
-    height: px2rem(15);
     .cover-author-text {
       font-size: px2rem(14);
       line-height: px2rem(16);
