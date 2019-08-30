@@ -1,2 +1,0 @@
-# czh-reader-pro
- 

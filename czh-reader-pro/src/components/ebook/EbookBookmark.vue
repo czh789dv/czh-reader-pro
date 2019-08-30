@@ -197,6 +197,11 @@ export default {
       color: white;
       transition: all .2s linear;
       @include center;
+
+      .iconfont {
+        color: white;
+        font-size: px2rem(16);
+      }
     }
 
     .ebook-bookmark-text {
@@ -210,6 +215,7 @@ export default {
     right: 0;
     bottom: 0;
     margin-right: px2rem(15);
+
   }
 }
 </style>

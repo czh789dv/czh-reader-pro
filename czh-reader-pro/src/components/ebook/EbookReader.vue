@@ -299,12 +299,6 @@ export default {
       this.initEpub()
     })
     // console.log(`${baseUrl}${fileName}.epub`)
-  },
-  components: {},
-  data() {
-    return {
-
-    }
   }
 }
 </script>

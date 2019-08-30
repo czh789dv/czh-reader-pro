@@ -179,8 +179,8 @@ export default {
     },
     //关闭动画
     close() {
-      this.setFlapCardVisible(false)
       this.StopAnimation()
+      this.setFlapCardVisible(false)
     },
     //开始小球动画
     startPonitAnimation() {

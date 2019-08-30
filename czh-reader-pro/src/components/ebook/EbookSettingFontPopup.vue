@@ -51,7 +51,7 @@ export default {
         this.currentBook.rendition.themes.font('Times New Roman')
       } else {
         this.currentBook.rendition.themes.font(font)
-        console.log('????' + font)
+        // console.log('????' + font)
       }
     },
     isSelected(item) {
